@@ -1,10 +1,10 @@
 <template>
     <!-- <main class="relative z-10" aria-labelledby="slide-over-title" role="dialog" aria-modal="true"> -->
-    <main class="bg-gray-700 h-screen py-5">
+    <main class="bg-gradient-to-r from-gray-800 via-gray-900 to-purple-900 h-screen py-5">
         <!-- Background backdrop, show/hide based on slide-over state. -->
         <!-- <div class="fixed inset-0"></div> -->
 
-        <div class="p-5 h-full max-w-3xl mx-auto bg-yellow-100 border-8 border-yellow-300 rounded-xl overflow-y-scroll">
+        <div class="p-5 h-full max-w-3xl mx-auto bg-rose-100 border-8 border-rose-300 rounded-xl overflow-y-scroll">
             <TimelineWin />
         </div>
 
