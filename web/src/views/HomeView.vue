@@ -13,8 +13,6 @@
 </template>
 
 <script>
-// const { ElectrumClient } = require('electrum-cash')
-
 /* Import components. */
 import SidePanel from '@/components/SidePanel'
 import TimelineWin from '@/components/TimelineWin'
@@ -34,35 +32,54 @@ export default {
         //
     },
     created: async function () {
-        // const electrum = new ElectrumClient('Electrum client example', '1.4.1', 'electrum.nexa.org:50002');
-        // console.log('ELECTRUM', electrum);
-
-        // Wait for the client to connect
-        // const result = await electrum.connect()
-        // console.log('RESULT', result);
-
         const socket = new WebSocket("ws://electrum.nexa.org:7230")
-        console.log('EXAMPLE SOCKET', socket);
+        // console.log('EXAMPLE SOCKET', socket);
 
-        const request = `{"method":"blockchain.address.get_balance","params":["nexa:nqtsq5g5mtglrfqmnr45s0x364pxcg2uw88h72hl9c864cyj"],"id":1}`
+        // const request = `{"method":"blockchain.address.get_balance","params":["nexa:nqtsq5g5mtglrfqmnr45s0x364pxcg2uw88h72hl9c864cyj", true],"id":1}`
 
         socket.onopen = function () {
-              console.log('ONOPEN');
+              // console.log('ONOPEN');
 
+              let request
+
+              request = `{"method":"blockchain.transaction.get","params":["66ce81cec5a010e151c68d63bd135133cd54cc5f4904817c738a4a19986ccb0c",true],"id":194}`
+              socket.send(request + '\n')
+
+              request = `{"method":"blockchain.headers.subscribe","params":[""],"id":1}`
               socket.send(request + '\n')
         }
 
         socket.onmessage = function (msg) {
-            console.log('ONMESSAGE', msg);
+            // console.log('ONMESSAGE', msg);
+
+            let data
+            let result
+            let params
 
             if (msg && msg.data) {
                 try {
-                    const data = JSON.parse(msg.data)
-                    console.log('DATA', data);
+                    data = JSON.parse(msg.data)
+                    // console.log('DATA', data);
 
                     if (data && data.result) {
-                        const result = data.result
+                        result = data.result
                         console.log('RESULT', result);
+                    }
+
+                    if (data && data.params) {
+                        params = data.params
+                        console.log('PARAMS', params);
+                    }
+
+                    if (params && params[0].height) {
+                        console.log('NEW BLOCK', params[0]);
+
+                        const height = params[0].height
+
+                        let request
+
+                        request = `{"method":"blockchain.block.header","params":["${height}"],"id":1}`
+                        socket.send(request + '\n')
                     }
                 } catch (err) {
                     console.error(err)
