@@ -42,11 +42,18 @@ export default {
 
               let request
 
-              request = `{"method":"blockchain.transaction.get","params":["66ce81cec5a010e151c68d63bd135133cd54cc5f4904817c738a4a19986ccb0c",true],"id":194}`
+              const txBytes = '3feb2e20a908ccd7d31f84224276b02f2c3951ed3448da58722a107ec4ab393c'
+              const txid = txBytes.match(/[a-fA-F0-9]{2}/g).reverse().join('')
+
+              // request = `{"method":"blockchain.transaction.get","params":["66ce81cec5a010e151c68d63bd135133cd54cc5f4904817c738a4a19986ccb0c",true],"id":194}`
+              request = `{"method":"blockchain.transaction.get","params":["${txid}",true],"id":194}`
               socket.send(request + '\n')
 
-              request = `{"method":"blockchain.headers.subscribe","params":[""],"id":1}`
-              socket.send(request + '\n')
+              // request = `{"method":"blockchain.headers.subscribe","params":[""],"id":1}`
+              // socket.send(request + '\n')
+
+              // request = `{"method":"blockchain.block.header","params":[53305],"id":1}`
+              // socket.send(request + '\n')
         }
 
         socket.onmessage = function (msg) {
