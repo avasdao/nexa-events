@@ -41,8 +41,56 @@ export default {
         // const result = await electrum.connect()
         // console.log('RESULT', result);
 
-        const exampleSocket = new WebSocket("ws://electrum.nexa.org")
-        console.log('EXAMPLE SOCKET', exampleSocket);
+        const socket = new WebSocket("ws://electrum.nexa.org:7230")
+        console.log('EXAMPLE SOCKET', socket);
+
+        const request = `{"method":"blockchain.address.get_balance","params":["nexa:nqtsq5g5mtglrfqmnr45s0x364pxcg2uw88h72hl9c864cyj"],"id":1}`
+
+        socket.onopen = function () {
+              console.log('ONOPEN');
+
+              socket.send(request + '\n')
+        }
+
+        socket.onmessage = function (msg) {
+            console.log('ONMESSAGE', msg);
+
+            if (msg && msg.data) {
+                try {
+                    const data = JSON.parse(msg.data)
+                    console.log('DATA', data);
+
+                    if (data && data.result) {
+                        const result = data.result
+                        console.log('RESULT', result);
+                    }
+                } catch (err) {
+                    console.error(err)
+                }
+            }
+        }
+
+        socket.onclose = function () {
+            console.log('ONCLOSE');
+        }
+
+        socket.onerror = function (e) {
+            console.log('ONERROR', e);
+        }
+
+        // socket.addEventListener("error", e => {
+        //     console.log("error", e);
+        // });
+
+        // Connection opened
+        // socket.addEventListener('open', async (event) => {
+        //     console.log('CONNECTION IS OPEN', event);
+        //
+        //     const response = await socket.send(request)
+        //     console.log('RESPONSE', response);
+        // });
+
+
     },
     mounted: function () {
         //
