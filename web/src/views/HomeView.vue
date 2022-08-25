@@ -1,26 +1,35 @@
 <template>
-    <!-- <main class="relative z-10" aria-labelledby="slide-over-title" role="dialog" aria-modal="true"> -->
     <main class="bg-gradient-to-r from-gray-800 via-gray-900 to-purple-900 h-screen p-5">
-        <div class="flex justify-end">
-            <svg @click="toggleMenu" class="w-10 h-10 text-gray-200 cursor-pointer" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path></svg>
+        <div class="flex flex-col h-full">
+            <div class="flex justify-between items-center mb-3">
+                <div>
+                    <img class="h-10 lg:h-14 w-10 lg:w-14" :src="require('../assets/logo.png')" />
+                </div>
+
+                <h1 class="text-3xl sm:text-4xl lg:text-5xl text-rose-400 font-bold tracking-tighter opacity-70">
+                    NEXA Events
+                </h1>
+
+                <svg @click="toggleMenu" class="w-10 h-10 text-gray-200 cursor-pointer" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path></svg>
+            </div>
+
+            <div class="flex-1 p-5 max-w-3xl mx-auto bg-rose-100 border-8 border-rose-300 rounded-xl overflow-y-scroll">
+                <TimelineWin />
+            </div>
         </div>
 
-        <div class="p-5 h-full max-w-3xl mx-auto bg-rose-100 border-8 border-rose-300 rounded-xl overflow-y-scroll">
-            <TimelineWin />
-        </div>
-
-        <SidePanel :class="{ hidden: showingMenu }" @toggleMenu="showingMenu = !showingMenu" />
+        <ManagerView :class="{ hidden: !showingMenu }" @toggleMenu="showingMenu = !showingMenu" />
     </main>
 </template>
 
 <script>
 /* Import components. */
-import SidePanel from '@/components/SidePanel'
+import ManagerView from '@/components/ManagerView'
 import TimelineWin from '@/components/TimelineWin'
 
 export default {
     components: {
-        SidePanel,
+        ManagerView,
         TimelineWin,
     },
     data: () => ({
