@@ -1,14 +1,15 @@
 <template>
     <!-- <main class="relative z-10" aria-labelledby="slide-over-title" role="dialog" aria-modal="true"> -->
-    <main class="bg-gradient-to-r from-gray-800 via-gray-900 to-purple-900 h-screen py-5">
-        <!-- Background backdrop, show/hide based on slide-over state. -->
-        <!-- <div class="fixed inset-0"></div> -->
+    <main class="bg-gradient-to-r from-gray-800 via-gray-900 to-purple-900 h-screen p-5">
+        <div class="flex justify-end">
+            <svg @click="toggleMenu" class="w-10 h-10 text-gray-200 cursor-pointer" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path></svg>
+        </div>
 
         <div class="p-5 h-full max-w-3xl mx-auto bg-rose-100 border-8 border-rose-300 rounded-xl overflow-y-scroll">
             <TimelineWin />
         </div>
 
-        <SidePanel class="hidden" />
+        <SidePanel :class="{ hidden: showingMenu }" @toggleMenu="showingMenu = !showingMenu" />
     </main>
 </template>
 
@@ -23,20 +24,28 @@ export default {
         TimelineWin,
     },
     data: () => ({
-        //
+        showingMenu: null,
     }),
     computed: {
         //
     },
     methods: {
-        //
+        toggleMenu() {
+            this.showingMenu = !this.showingMenu
+        },
+
     },
     created: async function () {
+        /* Initialize menu flag. */
+        this.showingMenu = false
+
+        /* Initialize socket connection to Electrum server. */
         const socket = new WebSocket('ws://electrum.nexa.org:7230')
         // console.log('EXAMPLE SOCKET', socket);
 
         // const request = `{"method":"blockchain.address.get_balance","params":["nexa:nqtsq5g5mtglrfqmnr45s0x364pxcg2uw88h72hl9c864cyj", true],"id":1}`
 
+        /* Handle open connection. */
         socket.onopen = function () {
               // console.log('ONOPEN');
 
@@ -56,6 +65,7 @@ export default {
               socket.send(request + '\n')
         }
 
+        /* Handle message. */
         socket.onmessage = function (msg) {
             // console.log('ONMESSAGE', msg);
 
@@ -94,26 +104,15 @@ export default {
             }
         }
 
+        /* Handle connection close. */
         socket.onclose = function () {
             console.log('ONCLOSE');
         }
 
+        /* Handle connection error. */
         socket.onerror = function (e) {
             console.log('ONERROR', e);
         }
-
-        // socket.addEventListener("error", e => {
-        //     console.log("error", e);
-        // });
-
-        // Connection opened
-        // socket.addEventListener('open', async (event) => {
-        //     console.log('CONNECTION IS OPEN', event);
-        //
-        //     const response = await socket.send(request)
-        //     console.log('RESPONSE', response);
-        // });
-
 
     },
     mounted: function () {

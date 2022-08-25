@@ -1,6 +1,10 @@
 <template>
     <main class="fixed inset-0 overflow-hidden">
+        <!-- Background backdrop, show/hide based on slide-over state. -->
+
         <div class="absolute inset-0 overflow-hidden">
+            <div class="fixed inset-0 bg-purple-700 opacity-70"></div>
+
             <div class="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10 sm:pl-16">
                 <!--
           Slide-over panel, show/hide based on slide-over state.
@@ -23,7 +27,7 @@
                                         <p class="text-sm text-gray-500">Get started by filling in the information below to create your new project.</p>
                                     </div>
                                     <div class="flex h-7 items-center">
-                                        <button type="button" class="text-gray-400 hover:text-gray-500">
+                                        <button @click="toggleMenu" type="button" class="text-gray-400 hover:text-gray-500">
                                             <span class="sr-only">Close panel</span>
                                             <!-- Heroicon name: outline/x -->
                                             <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
@@ -223,7 +227,10 @@ export default {
         //
     },
     methods: {
-        //
+        toggleMenu() {
+            this.$emit('toggleMenu')
+        },
+        
     },
     created: function () {
         //
