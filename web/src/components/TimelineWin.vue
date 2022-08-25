@@ -1,5 +1,5 @@
 <template>
-    <main class="bg-rose-200">
+    <main class="bg-indigo-200">
         <ul role="list" class="-mb-8">
             <li>
                 <div class="relative pb-8">

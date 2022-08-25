@@ -1,19 +1,19 @@
 <template>
-    <main class="bg-gradient-to-r from-gray-800 via-gray-900 to-purple-900 h-screen p-5">
-        <div class="flex flex-col h-full">
-            <div class="flex justify-between items-center mb-3">
+    <main class="bg-gradient-to-r from-gray-800 via-gray-900 to-indigo-900 h-screen p-5">
+        <div class="flex flex-col h-full max-w-3xl mx-auto space-y-4">
+            <div class="flex justify-between items-center px-1 sm:px-3">
                 <div>
-                    <img class="h-10 lg:h-14 w-10 lg:w-14" :src="require('../assets/logo.png')" />
+                    <img class="h-10 lg:h-12 w-10 lg:w-12" :src="require('../assets/logo.png')" />
                 </div>
 
-                <h1 class="text-3xl sm:text-4xl lg:text-5xl text-rose-400 font-bold tracking-tighter opacity-70">
+                <h1 class="text-3xl sm:text-4xl lg:text-5xl text-indigo-400 font-bold tracking-tighter opacity-70">
                     NEXA Events
                 </h1>
 
-                <svg @click="toggleMenu" class="w-10 h-10 text-gray-200 cursor-pointer" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path></svg>
+                <svg @click="toggleMenu" class="w-12 lg:w-14 h-12 lg:h-14 text-gray-200 cursor-pointer" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path></svg>
             </div>
 
-            <div class="flex-1 p-5 max-w-3xl mx-auto bg-rose-100 border-8 border-rose-300 rounded-xl overflow-y-scroll">
+            <div class="flex-1 p-5 bg-indigo-100 border-8 border-indigo-300 rounded-xl overflow-y-scroll">
                 <TimelineWin />
             </div>
         </div>
