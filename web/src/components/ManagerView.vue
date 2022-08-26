@@ -23,13 +23,9 @@
                             <div class="bg-gray-50 px-4 py-6 sm:px-6">
                                 <div class="flex items-start justify-between space-x-3">
                                     <div class="space-y-1">
-                                        <h1 class="mb-3 text-xl lg:text-2xl text-rose-400 font-bold">
+                                        <h1 class="mb-3 text-xl lg:text-2xl text-indigo-600 font-bold">
                                             NEXA Events Manager
                                         </h1>
-
-                                        <h2 class="text-lg font-medium text-gray-900" id="slide-over-title">
-                                            New project
-                                        </h2>
 
                                         <p class="text-sm text-gray-500">
                                             Get started by filling in the information below to create your new project.
