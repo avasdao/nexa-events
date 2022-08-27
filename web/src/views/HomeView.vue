@@ -16,6 +16,12 @@
             <div class="flex-1 p-5 bg-indigo-100 border-8 border-indigo-300 rounded-xl overflow-y-scroll">
                 <TimelineWin />
             </div>
+
+            <div class="flex justify-center">
+                <span class="text-gray-200 text-xs">
+                    brought to you with ❤️ from <a class="text-rose-300 font-medium" href="https://avasdao.org" target="_blank">Ava's DAO</a>
+                </span>
+            </div>
         </div>
 
         <AdminView v-if="isAdmin" :class="{ hidden: !showingMenu }" @toggleMenu="showingMenu = !showingMenu" />
