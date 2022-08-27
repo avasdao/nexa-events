@@ -28,7 +28,7 @@
                                         </h1>
 
                                         <p class="text-sm text-gray-500">
-                                            Get started by filling in the information below to create your new project.
+                                            Subscribe to alerts for instant notification of your on-chain activities.
                                         </p>
                                     </div>
 
@@ -44,132 +44,128 @@
                                 </div>
                             </div>
 
-                            <!-- Divider container -->
                             <div class="space-y-6 py-6 sm:space-y-0 sm:divide-y sm:divide-gray-200 sm:py-0">
-                                <!-- Project name -->
+
                                 <div class="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5">
                                     <div>
-                                        <label for="project-name" class="block text-sm font-medium text-gray-900 sm:mt-px sm:pt-2"> Project name </label>
+                                        <label for="project-name" class="block text-sm font-medium text-gray-900 sm:mt-px sm:pt-2">
+                                            Nexa Address or XPUB
+                                        </label>
                                     </div>
+
                                     <div class="sm:col-span-2">
-                                        <input type="text" name="project-name" id="project-name" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" />
+                                        <input v-model="address" placeholder="nexa:nqtsq... or xpub6CD..." type="text" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" />
                                     </div>
                                 </div>
 
-                                <!-- Project description -->
                                 <div class="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5">
                                     <div>
-                                        <label for="project-description" class="block text-sm font-medium text-gray-900 sm:mt-px sm:pt-2"> Description </label>
+                                        <label for="project-name" class="block text-sm font-medium text-gray-900 sm:mt-px sm:pt-2">
+                                            Email Address
+                                        </label>
                                     </div>
+
+                                    <div class="sm:col-span-2">
+                                        <input v-model="email" placeholder="satoshi@bitcoin.org" type="text" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" />
+                                    </div>
+                                </div>
+
+                                <div class="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5">
+                                    <div>
+                                        <label for="project-description" class="block text-sm font-medium text-gray-900 sm:mt-px sm:pt-2">
+                                            Message Notes
+                                        </label>
+                                    </div>
+
                                     <div class="sm:col-span-2">
                                         <textarea
-                                            id="project-description"
-                                            name="project-description"
-                                            rows="3"
+                                            v-model="notes"
+                                            placeholder="Enter any (optional) notes here."
+                                            rows="2"
                                             class="block w-full rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                                         ></textarea>
                                     </div>
                                 </div>
 
-                                <!-- Team members -->
-                                <div class="space-y-2 px-4 sm:grid sm:grid-cols-3 sm:items-center sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5">
-                                    <div>
-                                        <h3 class="text-sm font-medium text-gray-900">Team Members</h3>
-                                    </div>
-                                    <div class="sm:col-span-2">
-                                        <div class="flex space-x-2">
-                                            <a href="#" class="flex-shrink-0 rounded-full hover:opacity-75">
-                                                <img
-                                                    class="inline-block h-8 w-8 rounded-full"
-                                                    src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                                    alt="Tom Cook"
-                                                />
-                                            </a>
-
-                                            <a href="#" class="flex-shrink-0 rounded-full hover:opacity-75">
-                                                <img
-                                                    class="inline-block h-8 w-8 rounded-full"
-                                                    src="https://images.unsplash.com/photo-1517365830460-955ce3ccd263?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                                    alt="Whitney Francis"
-                                                />
-                                            </a>
-
-                                            <a href="#" class="flex-shrink-0 rounded-full hover:opacity-75">
-                                                <img
-                                                    class="inline-block h-8 w-8 rounded-full"
-                                                    src="https://images.unsplash.com/photo-1519345182560-3f2917c472ef?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                                    alt="Leonard Krasner"
-                                                />
-                                            </a>
-
-                                            <a href="#" class="flex-shrink-0 rounded-full hover:opacity-75">
-                                                <img
-                                                    class="inline-block h-8 w-8 rounded-full"
-                                                    src="https://images.unsplash.com/photo-1463453091185-61582044d556?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                                    alt="Floyd Miles"
-                                                />
-                                            </a>
-
-                                            <a href="#" class="flex-shrink-0 rounded-full hover:opacity-75">
-                                                <img
-                                                    class="inline-block h-8 w-8 rounded-full"
-                                                    src="https://images.unsplash.com/photo-1502685104226-ee32379fefbe?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                                    alt="Emily Selman"
-                                                />
-                                            </a>
-
-                                            <button
-                                                type="button"
-                                                class="inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border-2 border-dashed border-gray-200 bg-white text-gray-400 hover:border-gray-300 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                                            >
-                                                <span class="sr-only">Add team member</span>
-                                                <!-- Heroicon name: solid/plus-sm -->
-                                                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                                    <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
-                                                </svg>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Privacy -->
                                 <fieldset class="space-y-2 px-4 sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5">
-                                    <legend class="sr-only">Privacy</legend>
-                                    <div class="text-sm font-medium text-gray-900" aria-hidden="true">Privacy</div>
+                                    <legend class="sr-only">Subscription Options</legend>
+
+                                    <div class="text-sm font-medium text-gray-900" aria-hidden="true">
+                                        Subscription Options
+                                    </div>
+
                                     <div class="space-y-5 sm:col-span-2">
-                                        <div class="space-y-5 sm:mt-0">
-                                            <div class="relative flex items-start">
-                                                <div class="absolute flex h-5 items-center">
-                                                    <input id="public-access" name="privacy" aria-describedby="public-access-description" type="radio" class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500" checked />
-                                                </div>
-                                                <div class="pl-7 text-sm">
-                                                    <label for="public-access" class="font-medium text-gray-900"> Public access </label>
-                                                    <p id="public-access-description" class="text-gray-500">Everyone with the link will see this project</p>
-                                                </div>
+                                        <legend class="sr-only">Notifications</legend>
+
+                                        <div class="relative flex items-start">
+                                            <div class="flex items-center h-5">
+                                                <input aria-describedby="comments-description" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" checked />
                                             </div>
-                                            <div class="relative flex items-start">
-                                                <div class="absolute flex h-5 items-center">
-                                                    <input id="restricted-access" name="privacy" aria-describedby="restricted-access-description" type="radio" class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500" />
-                                                </div>
-                                                <div class="pl-7 text-sm">
-                                                    <label for="restricted-access" class="font-medium text-gray-900"> Private to Project Members </label>
-                                                    <p id="restricted-access-description" class="text-gray-500">Only members of this project would be able to access</p>
-                                                </div>
-                                            </div>
-                                            <div class="relative flex items-start">
-                                                <div class="absolute flex h-5 items-center">
-                                                    <input id="private-access" name="privacy" aria-describedby="private-access-description" type="radio" class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500" />
-                                                </div>
-                                                <div class="pl-7 text-sm">
-                                                    <label for="private-access" class="font-medium text-gray-900"> Private to you </label>
-                                                    <p id="private-access-description" class="text-gray-500">You are the only one able to access this project</p>
-                                                </div>
+
+                                            <div class="ml-3 text-sm">
+                                                <label for="comments" class="font-medium text-gray-700">
+                                                    Coin Transfers
+                                                </label>
+
+                                                <span id="comments-description" class="text-gray-500">
+                                                    <span class="sr-only">Coin Transfers</span> all sent &amp; received
+                                                </span>
                                             </div>
                                         </div>
+
+                                        <div class="relative flex items-start">
+                                            <div class="flex items-center h-5">
+                                                <input aria-describedby="comments-description" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" disabled />
+                                            </div>
+
+                                            <div class="ml-3 text-sm">
+                                                <label for="comments" class="font-medium text-gray-700">
+                                                    Token Transfers
+                                                </label>
+
+                                                <span id="comments-description" class="text-gray-500">
+                                                    <span class="sr-only">Token Transfers</span> sent &amp; received
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <div class="relative flex items-start">
+                                            <div class="flex items-center h-5">
+                                                <input aria-describedby="candidates-description" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" disabled />
+                                            </div>
+
+                                            <div class="ml-3 text-sm">
+                                                <label for="candidates" class="font-medium text-gray-700">
+                                                    Coinbase
+                                                </label>
+
+                                                <span id="candidates-description" class="text-gray-500">
+                                                    <span class="sr-only">Coinbase </span> only mined coins
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <div class="relative flex items-start">
+                                            <div class="flex items-center h-5">
+                                                <input aria-describedby="candidates-description" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" disabled />
+                                            </div>
+
+                                            <div class="ml-3 text-sm">
+                                                <label for="candidates" class="font-medium text-gray-700">
+                                                    Double Spend Proof
+                                                </label>
+
+                                                <span id="candidates-description" class="text-gray-500">
+                                                    <span class="sr-only">Double Spend Proof </span> zero confirmations
+                                                </span>
+                                            </div>
+                                        </div>
+
                                         <hr class="border-gray-200" />
+
                                         <div class="space-between sm:space-between flex flex-col space-y-4 sm:flex-row sm:items-center sm:space-y-0">
                                             <div class="flex-1">
-                                                <a href="#" class="group flex items-center space-x-2.5 text-sm font-medium text-indigo-600 hover:text-indigo-900">
+                                                <a href="javascript://" class="group flex items-center space-x-2.5 text-sm font-medium text-indigo-600 hover:text-indigo-900">
                                                     <!-- Heroicon name: solid/link -->
                                                     <svg class="h-5 w-5 text-indigo-500 group-hover:text-indigo-900" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                                                         <path
@@ -181,8 +177,9 @@
                                                     <span> Copy link </span>
                                                 </a>
                                             </div>
+
                                             <div>
-                                                <a href="#" class="group flex items-center space-x-2.5 text-sm text-gray-500 hover:text-gray-900">
+                                                <a href="javascript://" class="group flex items-center space-x-2.5 text-sm text-gray-500 hover:text-gray-900">
                                                     <!-- Heroicon name: solid/question-mark-circle -->
                                                     <svg class="h-5 w-5 text-gray-400 group-hover:text-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                                                         <path
@@ -191,6 +188,7 @@
                                                             clip-rule="evenodd"
                                                         />
                                                     </svg>
+
                                                     <span> Learn more about sharing </span>
                                                 </a>
                                             </div>
@@ -205,15 +203,16 @@
                             <div class="flex justify-end space-x-3">
                                 <button
                                     type="button"
-                                    class="rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                                    class="rounded-md border border-gray-300 bg-white py-2 px-4 text-xl font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                                 >
                                     Cancel
                                 </button>
+
                                 <button
                                     type="submit"
-                                    class="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                                    class="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-xl font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                                 >
-                                    Create
+                                    Create Subscription
                                 </button>
                             </div>
                         </div>
@@ -227,7 +226,9 @@
 <script>
 export default {
     data: () => ({
-        //
+        address: null,
+        email: null,
+        notes: null,
     }),
     computed: {
         //
