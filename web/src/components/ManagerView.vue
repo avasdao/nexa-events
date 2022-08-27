@@ -199,7 +199,14 @@
                         </div>
 
                         <!-- Action buttons -->
-                        <div class="flex-shrink-0 border-t border-gray-200 px-4 py-5 sm:px-6">
+                        <div class="flex flex-row justify-between flex-shrink-0 border-t border-gray-200 px-4 py-5 sm:px-6">
+                            <button
+                                @click="signin"
+                                class="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-xl font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                            >
+                                Signin
+                            </button>
+
                             <div class="flex justify-end space-x-3">
                                 <button
                                     @click="cancel"
@@ -210,7 +217,7 @@
 
                                 <button
                                     @click="create"
-                                    class="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-xl font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                                    class="inline-flex justify-center rounded-md border border-transparent bg-green-600 py-2 px-4 text-xl font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                                 >
                                     Create Subscription
                                 </button>
@@ -224,6 +231,11 @@
 </template>
 
 <script>
+/* global ethereum */
+
+/* Import modules. */
+import { ethers } from 'ethers'
+
 export default {
     data: () => ({
         address: null,
@@ -256,7 +268,43 @@ export default {
             console.log(content)
         },
 
-        cancel() {
+        async cancel() {
+            // TODO
+        },
+
+        async signin() {
+            /* Validate embedded Web3 objects. */
+            if (!window.ethereum && !window.bitcoin) {
+                /* Validate embedded ethereum object. */
+                if (window.bitcoin) {
+                    console.info('Found Bitcoin provider.')
+                } else if (window.ethereum) {
+                    console.info('Found Ethereum provider.')
+                } else {
+                    return console.error('No Web3 provider found.')
+                }
+            }
+
+            /* Connect accounts. */
+            const accounts = await ethereum.request({
+                method: 'eth_requestAccounts'
+            })
+            // console.info('Connected Web3 accounts:', accounts)
+
+            if (!accounts || accounts.length < 1) {
+                return alert('Please connect your MetaMask account to continue.')
+            }
+
+            console.log('ACCOUNTS', accounts)
+
+            /* Initialize provider. */
+            const provider = new ethers
+                .providers
+                .Web3Provider(window.ethereum, 'any')
+
+            /* Set signer. */
+            const signer = provider.getSigner()
+            console.log('SIGNER', signer)
 
         },
 
