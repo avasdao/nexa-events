@@ -1,94 +1,55 @@
 /* Import modules. */
 const moment = require('moment')
 const PouchDB = require('pouchdb')
-const superagent = require('superagent')
 const util = require('util')
+const { v4: uuidv4 } = require('uuid')
 
 /* Initialize databases. */
 // const logsDb = new PouchDB(`http://${process.env.COUCHDB_AUTH}@localhost:5984/logs`)
 // const sessionsDb = new PouchDB(`http://${process.env.COUCHDB_AUTH}@localhost:5984/sessions`)
+const notifsDb = new PouchDB('db/notifs')
+const sessionsDb = new PouchDB('db/sessions')
 
 /**
  * Notifications
  */
 const notifs = async function (req, res) {
-    let index
-    let type
-    let results
+    let id
     let body
-
-    let count = 0
+    let response
+    let results
 
     body = req.body
     console.log('BODY', body)
 
-return
-
-    /* Set query. */
-    const query = req.params.query.toLowerCase()
-    console.log('QUERY', query)
-
-    /* Validate query. */
-    if (!query) {
+    /* Validate body. */
+    if (!body) {
         /* Set status. */
         res.status(400)
 
         /* Return error. */
         return res.json({
-            error: 'Missing query parameter.'
+            error: 'Missing body parameter.'
         })
     }
 
-    /* Request existing user. */
-    results = await coinmapDb.query('api/byKeyword', {
-        // include_docs: true,
-    }).catch(err => {
-        console.error('DATA ERROR:', err)
-    })
-    // console.log('USERS RESULT (byKeyword)', util.inspect(results, false, null, true))
+    /* Generate id. */
+    id = uuidv4()
 
-    if (results.rows.length > 0) {
-        coinmap = results.rows.filter(_venue => {
-            const key = _venue.key.toLowerCase()
-
-            if (key.indexOf(query) !== -1) {
-                // console.log('KEY', key)
-                count++
-                return true
-            } else {
-                return false
-            }
+    /* Add record to database. */
+    response = await notifsDb
+        .put({
+            _id: id,
+            ...body,
         })
-    }
+        .catch(err => {
+            console.error(err)
 
-    /* Request existing user. */
-    results = await merchantsDb.query('api/byKeyword', {
-        // include_docs: true,
-    }).catch(err => {
-        console.error('DATA ERROR:', err)
-    })
-    // console.log('USERS RESULT (byKeyword)', util.inspect(results, false, null, true))
-
-    if (results.rows.length > 0) {
-        merchants = results.rows.filter(_venue => {
-            const key = _venue.key.toLowerCase()
-
-            if (key.indexOf(query) !== -1) {
-                // console.log('KEY', key)
-                count++
-                return true
-            } else {
-                return false
-            }
+            return res.json(err)
         })
-    }
 
-    /* Return package. */
-    res.json({
-        count,
-        coinmap,
-        merchants,
-    })
+    /* Send response back to client. */
+    res.json(response)
 }
 
 /* Export module. */
