@@ -44,40 +44,19 @@ app.get('/', (req, res) => {
 })
 
 /* Initialize Administration route. */
-app.post('/v1/admin/media', require('./routes/admin/media'))
-app.post('/v1/admin/merchants', require('./routes/admin/merchants'))
-app.post('/v1/admin/users', require('./routes/admin/users'))
+app.post('/v1/admin', require('./routes/admin'))
 
 /* Initialize Sessions route. */
 app.get('/v1/sessions', require('./routes/sessions'))
 app.post('/v1/sessions', require('./routes/sessions'))
 
-/* Initialize Merchants route. */
-app.get('/v1/merchants/:id', require('./routes/merchants'))
-app.get('/v1/merchants', require('./routes/merchants'))
-app.post('/v1/merchants/:id', require('./routes/merchants'))
-app.post('/v1/merchants', require('./routes/merchants'))
-
-/* Initialize Users route. */
-app.get('/v1/users/:address', require('./routes/users'))
-app.post('/v1/users/:address', require('./routes/users'))
-
-/* Initialize Search route. */
-// app.get('/v1/search/autocomplete/:query', require('./routes/autoComplete-CouchDB'))
-app.get('/v1/search/autocomplete/:query', require('./routes/autoComplete-Elasticsearch'))
-app.get('/v1/search/map/:lat/:lng/:zoom', require('./routes/search'))
-app.get('/v1/search/:index/:type/:query', require('./routes/search'))
-app.get('/v1/search/:index/:query', require('./routes/search'))
-app.get('/v1/search/:query', require('./routes/search'))
-app.post('/v1/search/map', require('./routes/mapBounds-CouchDB'))
-// app.post('/v1/search/map', require('./routes/mapBounds-Elasticsearch'))
+/* Initialize Notifications route. */
+app.get('/v1/notifs/:address', require('./routes/notifs'))
+app.post('/v1/notifs/:address', require('./routes/notifs'))
 
 /* Initialize Magic (Email) Link route. */
 // app.get('/v1/magiclink', require('./routes/magiclink'))
 app.post('/v1/magiclink', require('./routes/magiclink'))
-
-/* Initialize media. */
-app.get('/v1/media/:mediaid', require('./routes/media'))
 
 // TODO: Offer help.
 app.get('/v1', (req, res) => {

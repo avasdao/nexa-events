@@ -9,9 +9,21 @@ const util = require('util')
 // const sessionsDb = new PouchDB(`http://${process.env.COUCHDB_AUTH}@localhost:5984/sessions`)
 
 /**
- * Notification By Email
+ * Notifications
  */
-const notifByEmail = async function (req, res) {
+const notifs = async function (req, res) {
+    let index
+    let type
+    let results
+    let body
+
+    let count = 0
+
+    body = req.body
+    console.log('BODY', body)
+
+return
+
     /* Set query. */
     const query = req.params.query.toLowerCase()
     console.log('QUERY', query)
@@ -26,19 +38,6 @@ const notifByEmail = async function (req, res) {
             error: 'Missing query parameter.'
         })
     }
-
-    let index
-    let type
-    let results
-    let body
-    let dslQuery
-    let hits
-
-    let count = 0
-
-    let coinmap = []
-    let merchants = []
-    let venues = []
 
     /* Request existing user. */
     results = await coinmapDb.query('api/byKeyword', {
@@ -93,4 +92,4 @@ const notifByEmail = async function (req, res) {
 }
 
 /* Export module. */
-module.exports = notifByEmail
+module.exports = notifs
