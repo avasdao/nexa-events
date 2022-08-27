@@ -18,22 +18,27 @@
             </div>
         </div>
 
-        <ManagerView :class="{ hidden: !showingMenu }" @toggleMenu="showingMenu = !showingMenu" />
+        <AdminView v-if="isAdmin" :class="{ hidden: !showingMenu }" @toggleMenu="showingMenu = !showingMenu" />
+        <ManagerView v-else :class="{ hidden: !showingMenu }" @toggleMenu="showingMenu = !showingMenu" />
     </main>
 </template>
 
 <script>
 /* Import components. */
+import AdminView from '@/components/AdminView'
 import ManagerView from '@/components/ManagerView'
 import TimelineWin from '@/components/TimelineWin'
 
 export default {
     components: {
+        AdminView,
         ManagerView,
         TimelineWin,
     },
     data: () => ({
         showingMenu: null,
+        isAdmin: null,
+        isManager: null,
     }),
     computed: {
         //
@@ -47,6 +52,13 @@ export default {
     created: async function () {
         /* Initialize menu flag. */
         this.showingMenu = false
+
+        /* Handle admin user. */
+        if (this.$route && this.$route.path === '/admin') {
+            this.isAdmin = true
+        } else {
+            this.isAdmin = false
+        }
 
         /* Initialize socket connection to Electrum server. */
         const socket = new WebSocket('ws://electrum.nexa.org:7230')
