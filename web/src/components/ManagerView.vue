@@ -23,9 +23,13 @@
                             <div class="bg-gray-50 px-4 py-6 sm:px-6">
                                 <div class="flex items-start justify-between space-x-3">
                                     <div class="space-y-1">
-                                        <h1 class="mb-3 text-xl lg:text-2xl text-indigo-600 font-bold">
-                                            NEXA Events Manager
-                                        </h1>
+                                        <div class="flex flex-row items-center">
+                                            <h1 class="mb-3 text-xl lg:text-2xl text-indigo-600 font-bold">
+                                                NEXA Events Manager
+                                            </h1>
+
+                                            <svg class="ml-5 w-10 h-10 text-indigo-300 font-bold" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z"></path></svg>
+                                        </div>
 
                                         <p class="text-sm text-gray-500">
                                             Subscribe to alerts for instant notification of your on-chain activities.
@@ -49,24 +53,29 @@
                                 <div class="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5">
                                     <div>
                                         <label for="project-name" class="block text-sm font-medium text-gray-900 sm:mt-px sm:pt-2">
-                                            Nexa Address or XPUB
+                                            Email Address
                                         </label>
+
+                                        <span class="block text-red-400 text-xs">
+                                            (required)
+                                        </span>
                                     </div>
 
                                     <div class="sm:col-span-2">
-                                        <input v-model="address" placeholder="nexa:nqtsq... or xpub6CD..." type="text" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" />
+                                        <input v-model="email" placeholder="satoshi@bitcoin.org" type="text" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" />
                                     </div>
                                 </div>
 
                                 <div class="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5">
                                     <div>
                                         <label for="project-name" class="block text-sm font-medium text-gray-900 sm:mt-px sm:pt-2">
-                                            Email Address
+                                            Nexa Address or
+                                            <br />Ext. Public Key <small>(XPUB)</small>
                                         </label>
                                     </div>
 
                                     <div class="sm:col-span-2">
-                                        <input v-model="email" placeholder="satoshi@bitcoin.org" type="text" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" />
+                                        <input v-model="address" placeholder="nexa:nqtsq... or xpub6CD..." type="text" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" />
                                     </div>
                                 </div>
 
@@ -189,7 +198,7 @@
                                                         />
                                                     </svg>
 
-                                                    <span> Learn more about sharing </span>
+                                                    <span> Learn more about alerts </span>
                                                 </a>
                                             </div>
                                         </div>
@@ -235,15 +244,32 @@
 
 /* Import modules. */
 import { ethers } from 'ethers'
+import moment from 'moment'
+// import { v4 as uuidv4 } from 'uuid'
 
 export default {
     data: () => ({
-        address: null,
+        accounts: null, // used for Web3 auth
+        address: null, // Nexa address
         email: null,
+        phone: null,
         notes: null,
     }),
     computed: {
-        //
+        /**
+         * Is Email Valid
+         *
+         * TODO
+         */
+        isEmailValid() {
+            /* Validate email address. */
+            if (!this.email) {
+                return false
+            }
+
+            return true
+        },
+
     },
     methods: {
         toggleMenu() {
@@ -251,6 +277,9 @@ export default {
         },
 
         async create() {
+            /* Validate email address. */
+            if (!this.validateEmail()) return
+
             const rawResponse = await fetch('http://127.0.0.1:3000/v1/notifs', {
                 method: 'POST',
                 headers: {
@@ -258,9 +287,9 @@ export default {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    address: this.address,
                     email: this.email,
-                    notes: this.notes,
+                    address: this.address || '',
+                    notes: this.notes || '',
                 })
             })
 
@@ -273,6 +302,9 @@ export default {
         },
 
         async signin() {
+            /* Validate email address. */
+            if (!this.validateEmail()) return
+
             /* Validate embedded Web3 objects. */
             if (!window.ethereum && !window.bitcoin) {
                 /* Validate embedded ethereum object. */
@@ -295,6 +327,7 @@ export default {
                 return alert('Please connect your MetaMask account to continue.')
             }
 
+            this.accounts = accounts
             console.log('ACCOUNTS', accounts)
 
             /* Initialize provider. */
@@ -304,8 +337,103 @@ export default {
 
             /* Set signer. */
             const signer = provider.getSigner()
-            console.log('SIGNER', signer)
+            // console.log('SIGNER', signer)
 
+            /* Set message name. */
+            const name = 'Nexa Events'
+
+            /* Set message version. */
+            const version = require('../../package.json').version
+
+            /* Set (connected) chain id. */
+            const chainId = await signer.getChainId()
+            // console.log('CHAIN ID', chainId);
+
+            /* Set verifying contract. */
+            // FIXME
+            const verifyingContract = '0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC'
+
+            /* Initialize the message domain. */
+            const domain = {
+                name,
+                version,
+                chainId,
+                verifyingContract,
+            }
+            console.log('DOMAIN', domain);
+
+            /* Set the named list of all type definitions. */
+            const types = {
+                Profile: [
+                    { name: 'email', type: 'string' },
+                    { name: 'account', type: 'address' },
+                    { name: 'phone', type: 'string' },
+                ],
+                Notif: [
+                    { name: 'profile', type: 'Profile' },
+                    { name: 'action', type: 'string' },
+                    { name: 'createdAt', type: 'int32' },
+                    { name: 'expiresAt', type: 'int32' },
+                ],
+            }
+
+            const profile = {
+                email: this.email,
+                account: this.accounts[0] || '0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC',
+                phone: this.phone || 'n/a',
+            }
+            console.log('PROFILE', profile);
+
+            const action = 'signin'
+            const createdAt = moment().unix()
+            const expiresAt = moment().add(7, 'days').unix()
+
+            const notif = {
+                profile,
+                action,
+                createdAt,
+                expiresAt,
+            }
+            console.log('NOTIF', notif);
+
+            /* Create authentication package. */
+            const auth = { ...notif }
+            console.log('AUTH PACKAGE', auth)
+
+            const signature = await signer
+                ._signTypedData(domain, types, auth)
+            console.log('SIGNATURE', signature)
+
+            const rawResponse = await fetch('http://127.0.0.1:3000/v1/sessions', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    auth,
+                    signature,
+                })
+            })
+
+            const content = await rawResponse.json()
+            console.log(content)
+        },
+
+        /**
+         * Validate Email
+         *
+         * TODO
+         */
+        validateEmail() {
+            /* Validate email address. */
+            if (!this.isEmailValid) {
+                alert(`Oops! An email address is required to continue.`)
+
+                return false
+            }
+
+            return true
         },
 
     },

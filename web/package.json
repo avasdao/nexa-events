@@ -1,6 +1,6 @@
 {
   "name": "nexa-events",
-  "version": "22.8.26",
+  "version": "22.9.2",
   "license": "MIT",
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -13,6 +13,9 @@
   "dependencies": {
     "core-js": "3.24.1",
     "ethers": "5.7.0",
+    "moment": "2.29.4",
+    "numeral": "2.0.6",
+    "uuid": "8.3.2",
     "vue": "3.2.13",
     "vue-router": "4.0.3",
     "vuex": "4.0.0"
