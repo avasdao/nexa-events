@@ -360,41 +360,45 @@ export default {
                 chainId,
                 verifyingContract,
             }
-            console.log('DOMAIN', domain);
+            // console.log('DOMAIN', domain)
 
             /* Set the named list of all type definitions. */
             const types = {
                 Profile: [
-                    { name: 'email', type: 'string' },
                     { name: 'account', type: 'address' },
+                    { name: 'address', type: 'string' },
+                    { name: 'email', type: 'string' },
                     { name: 'phone', type: 'string' },
+                    { name: 'notes', type: 'string' },
                 ],
                 Notif: [
                     { name: 'profile', type: 'Profile' },
                     { name: 'action', type: 'string' },
-                    { name: 'createdAt', type: 'int32' },
-                    { name: 'expiresAt', type: 'int32' },
+                    { name: 'created', type: 'string' },
+                    { name: 'expires', type: 'string' },
                 ],
             }
 
             const profile = {
-                email: this.email,
                 account: this.accounts[0] || '0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC',
+                address: this.address || 'n/a',
+                email: this.email,
                 phone: this.phone || 'n/a',
+                notes: this.notes || 'n/a',
             }
-            console.log('PROFILE', profile);
+            // console.log('PROFILE', profile)
 
-            const action = 'signin'
-            const createdAt = moment().unix()
-            const expiresAt = moment().add(7, 'days').unix()
+            const action = 'signin_auth'
+            const created = moment().format('lll ZZ')
+            const expires = moment().add(7, 'days').format('lll ZZ')
 
             const notif = {
                 profile,
                 action,
-                createdAt,
-                expiresAt,
+                created,
+                expires,
             }
-            console.log('NOTIF', notif);
+            // console.log('NOTIF', notif)
 
             /* Create authentication package. */
             const auth = { ...notif }
