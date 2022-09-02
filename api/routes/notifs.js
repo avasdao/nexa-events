@@ -5,6 +5,7 @@ const nodemailer = require('nodemailer')
 const PouchDB = require('pouchdb')
 const util = require('util')
 const { v4: uuidv4 } = require('uuid')
+const validator = require('validator')
 
 /* Initialize databases. */
 // const logsDb = new PouchDB(`http://${process.env.COUCHDB_AUTH}@localhost:5984/logs`)
@@ -71,6 +72,7 @@ const notifs = async function (req, res) {
     let id
     let address
     let body
+    let email
     let response
     let results
 
@@ -105,20 +107,38 @@ const notifs = async function (req, res) {
         })
     }
 
+    email = body.email
+    console.log('\nNotification email:', email)
+
+    result = validator.isEmail(email)
+    console.log('\nIs email valid:', result)
+
+    /* Validate email. */
+    if (!result) {
+        /* Set status. */
+        res.status(400)
+
+        /* Return error. */
+        return res.json({
+            error: 'Your email address is invalid.'
+        })
+    }
+
     /* Generate id. */
     id = uuidv4()
 
     /* Add record to database. */
-    // response = await notifsDb
-    //     .put({
-    //         _id: id,
-    //         ...body,
-    //     })
-    //     .catch(err => {
-    //         console.error(err)
-    //
-    //         return res.json(err)
-    //     })
+    response = await notifsDb
+        .put({
+            _id: id,
+            address,
+            email,
+        })
+        .catch(err => {
+            console.error(err)
+
+            return res.json(err)
+        })
 
     /* Send response back to client. */
     res.json({
