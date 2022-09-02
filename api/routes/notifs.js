@@ -9,8 +9,8 @@ const { v4: uuidv4 } = require('uuid')
 /* Initialize databases. */
 // const logsDb = new PouchDB(`http://${process.env.COUCHDB_AUTH}@localhost:5984/logs`)
 // const sessionsDb = new PouchDB(`http://${process.env.COUCHDB_AUTH}@localhost:5984/sessions`)
-const notifsDb = new PouchDB('db/notifs')
-const sessionsDb = new PouchDB('db/sessions')
+const notifsDb = new PouchDB('dbs/notifs')
+const sessionsDb = new PouchDB('dbs/sessions')
 
 /* Initialize new Bitcoin client. */
 const client = new Client({
@@ -105,231 +105,25 @@ const notifs = async function (req, res) {
         })
     }
 
-
-
-/*
-
-addmultisigaddress
-
-backupwallet
-
-bumpfee
-clearbanned
-
-combinepsbt
-combinerawtransaction
-converttopsbt
-
-createmultisig
-createpsbt
-createrawtransaction
-
-decodepsbt
-decoderawtransaction
-decodescript
-
-deriveaddresses
-
-dumpprivkey
-dumptxoutset
-dumpwallet
-
-encryptwallet
-estimatefee
-estimatepriority
-estimatesmartfee
-estimatesmartpriority
-
-finalizepsbt
-fundrawtransaction
-
-getaccount
-getaccountaddress
-getaddressinfo
-getbalance
-getbalances
-
-getbestblockhash
-getblockcount
-getblockfilter
-getblockhash
-getblockheader
-getblockstats
-getblocktemplate
-getblockchaininfo
-
-getchaintips
-getchaintxstats
-getdifficulty
-gethashespersec
-
-getindexinfo
-getinfo
-getmemoryinfo
-
-getmempoolancestors
-getmempooldescendants
-getmempoolentry
-getmempoolinfo
-
-getmininginfo
-
-getnettotals
-getnetworkhashps
-getnetworkinfo
-
-getnewaddress
-getnodeaddresses
-getpeerinfo
-
-getrawchangeaddress
-getrawmempool
-getrawtransaction
-getreceivedbyaccount
-getreceivedbyaddress
-getreceivedbylabel
-
-getrpcinfo
-gettransaction
-gettxout
-gettxoutproof
-gettxoutsetinfo
-
-getunconfirmedbalance
-getwalletinfo
-
-getwork
-getzmqnotifications
-
-importaddress
-importmulti
-importprivkey
-importprunedfunds
-importpubkey
-importwallet
-
-joinpsbts
-
-keypoolrefill
-
-listaccounts
-listaddressgroupings
-listbanned
-listlabels
-
-listlockunspent
-listreceivedbyaccount
-listreceivedbyaddress
-listreceivedbylabel
-listsinceblock
-listtransactions
-
-listunspent
-listwalletdir
-
-listwallets
-loadwallet
-
-lockunspent
-
-preciousblock
-prioritisetransaction
-pruneblockchain
-
-scantxoutset
-sendfrom
-sendmany
-sendrawtransaction
-sendtoaddress
-
-sethdseed
-setlabel
-
-setnetworkactive
-settxfee
-setwalletflag
-
-signmessage
-signmessagewithprivkey
-signrawtransaction
-signrawtransactionwithkey
-signrawtransactionwithwallet
-
-submitblock
-testmempoolaccept
-
-unloadwallet
-uptime
-utxoupdatepsbt
-
-validateaddress
-verifychain
-verifymessage
-verifytxoutproof
-walletcreatefundedpsbt
-walletlock
-walletpassphrase
-walletpassphrasechange
-walletprocesspsbt
-
-*/
-
-    const balance = await client.getBalance('*', 0)
-    console.log('\nBALANCE', balance)
-
-    // client.getInfo().then((help) => console.log(help))
-return res.json({ status: 'done!', balance, })
-
     /* Generate id. */
     id = uuidv4()
 
     /* Add record to database. */
-    response = await notifsDb
-        .put({
-            _id: id,
-            ...body,
-        })
-        .catch(err => {
-            console.error(err)
-
-            return res.json(err)
-        })
-
-    const msgFrom = '"Nexa Events" <notify@nexa.events>'
-
-    const msgRecipient = 'info@avasdao.org'
-
-    const msgSubject = 'NEXA Transaction Event'
-
-    const msgDetails = {
-        txid: 'd465b82e9d9e74a19b5ea0ac09308be93be8e5f3b46ad8ceb0da99005b7e9b2e',
-    }
-
-    // create reusable transporter object using the default SMTP transport
-    const transporter = nodemailer.createTransport({
-        host: process.env.SMTP_HOST,
-        port: 587,
-        secure: false, // true for 465, false for other ports
-        auth: {
-            user: process.env.SMTP_USER,
-            pass: process.env.SMTP_PASS,
-        },
-    })
-
-    // send mail with defined transport object
-    const info = await transporter.sendMail({
-        from: msgFrom,
-        to: msgRecipient,
-        subject: msgSubject,
-        text: txtTemplate(msgDetails),
-        html: htmlTemplate(msgDetails),
-    })
-    console.log('Message sent: %s', info.messageId)
+    // response = await notifsDb
+    //     .put({
+    //         _id: id,
+    //         ...body,
+    //     })
+    //     .catch(err => {
+    //         console.error(err)
+    //
+    //         return res.json(err)
+    //     })
 
     /* Send response back to client. */
     res.json({
-        databaseId: response.id,
-        messageId: info.messageId,
+        id,
+        response,
     })
 }
 
