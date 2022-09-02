@@ -93,6 +93,17 @@ const notifs = async function (req, res) {
     address = body.address
     console.log('\nNotification address:', address)
 
+    /* Validate body. */
+    if (!address) {
+        /* Set status. */
+        res.status(400)
+
+        /* Return error. */
+        return res.json({
+            error: 'Missing address parameter.'
+        })
+    }
+
     result = await client.validateAddress(address)
     console.log('\nIs address valid:', result.isvalid, result)
 
