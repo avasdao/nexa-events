@@ -1,4 +1,5 @@
 /* Import modules. */
+const Client = require('bitcoin-core')
 const moment = require('moment')
 const nodemailer = require('nodemailer')
 const PouchDB = require('pouchdb')
@@ -10,6 +11,14 @@ const { v4: uuidv4 } = require('uuid')
 // const sessionsDb = new PouchDB(`http://${process.env.COUCHDB_AUTH}@localhost:5984/sessions`)
 const notifsDb = new PouchDB('db/notifs')
 const sessionsDb = new PouchDB('db/sessions')
+
+/* Initialize new Bitcoin client. */
+const client = new Client({
+    port: process.env.NEXA_RPC_PORT || 7227, // Testnet RPC port is 7229
+    host: process.env.NEXA_RPC_HOST || '127.0.0.1',
+    username: process.env.NEXA_RPC_USER || 'user',
+    password: process.env.NEXA_RPC_PASS || 'password',
+})
 
 const txtTemplate = (_msgDetails) => {
     return `
@@ -60,6 +69,7 @@ const htmlTemplate = (_msgDetails) => {
  */
 const notifs = async function (req, res) {
     let id
+    let address
     let body
     let response
     let results
@@ -77,6 +87,198 @@ const notifs = async function (req, res) {
             error: 'Missing body parameter.'
         })
     }
+
+    address = body.address
+    console.log('\nNotification address:', address)
+
+    result = await client.validateAddress(address)
+    console.log('\nIs address valid:', result.isvalid, result)
+
+    /* Validate address. */
+    if (!result.isvalid) {
+        /* Set status. */
+        res.status(400)
+
+        /* Return error. */
+        return res.json({
+            error: 'Your Nexa address is invalid.'
+        })
+    }
+
+
+
+/*
+
+addmultisigaddress
+
+backupwallet
+
+bumpfee
+clearbanned
+
+combinepsbt
+combinerawtransaction
+converttopsbt
+
+createmultisig
+createpsbt
+createrawtransaction
+
+decodepsbt
+decoderawtransaction
+decodescript
+
+deriveaddresses
+
+dumpprivkey
+dumptxoutset
+dumpwallet
+
+encryptwallet
+estimatefee
+estimatepriority
+estimatesmartfee
+estimatesmartpriority
+
+finalizepsbt
+fundrawtransaction
+
+getaccount
+getaccountaddress
+getaddressinfo
+getbalance
+getbalances
+
+getbestblockhash
+getblockcount
+getblockfilter
+getblockhash
+getblockheader
+getblockstats
+getblocktemplate
+getblockchaininfo
+
+getchaintips
+getchaintxstats
+getdifficulty
+gethashespersec
+
+getindexinfo
+getinfo
+getmemoryinfo
+
+getmempoolancestors
+getmempooldescendants
+getmempoolentry
+getmempoolinfo
+
+getmininginfo
+
+getnettotals
+getnetworkhashps
+getnetworkinfo
+
+getnewaddress
+getnodeaddresses
+getpeerinfo
+
+getrawchangeaddress
+getrawmempool
+getrawtransaction
+getreceivedbyaccount
+getreceivedbyaddress
+getreceivedbylabel
+
+getrpcinfo
+gettransaction
+gettxout
+gettxoutproof
+gettxoutsetinfo
+
+getunconfirmedbalance
+getwalletinfo
+
+getwork
+getzmqnotifications
+
+importaddress
+importmulti
+importprivkey
+importprunedfunds
+importpubkey
+importwallet
+
+joinpsbts
+
+keypoolrefill
+
+listaccounts
+listaddressgroupings
+listbanned
+listlabels
+
+listlockunspent
+listreceivedbyaccount
+listreceivedbyaddress
+listreceivedbylabel
+listsinceblock
+listtransactions
+
+listunspent
+listwalletdir
+
+listwallets
+loadwallet
+
+lockunspent
+
+preciousblock
+prioritisetransaction
+pruneblockchain
+
+scantxoutset
+sendfrom
+sendmany
+sendrawtransaction
+sendtoaddress
+
+sethdseed
+setlabel
+
+setnetworkactive
+settxfee
+setwalletflag
+
+signmessage
+signmessagewithprivkey
+signrawtransaction
+signrawtransactionwithkey
+signrawtransactionwithwallet
+
+submitblock
+testmempoolaccept
+
+unloadwallet
+uptime
+utxoupdatepsbt
+
+validateaddress
+verifychain
+verifymessage
+verifytxoutproof
+walletcreatefundedpsbt
+walletlock
+walletpassphrase
+walletpassphrasechange
+walletprocesspsbt
+
+*/
+
+    const balance = await client.getBalance('*', 0)
+    console.log('\nBALANCE', balance)
+
+    // client.getInfo().then((help) => console.log(help))
+return res.json({ status: 'done!', balance, })
 
     /* Generate id. */
     id = uuidv4()
