@@ -4,16 +4,6 @@
 
         <div class="absolute inset-0 overflow-hidden">
             <div class="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10 sm:pl-16">
-                <!--
-          Slide-over panel, show/hide based on slide-over state.
-
-          Entering: "transform transition ease-in-out duration-500 sm:duration-700"
-            From: "translate-x-full"
-            To: "translate-x-0"
-          Leaving: "transform transition ease-in-out duration-500 sm:duration-700"
-            From: "translate-x-0"
-            To: "translate-x-full"
-        -->
                 <div class="pointer-events-auto w-screen max-w-2xl">
                     <div class="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
                         <div class="flex-1">
@@ -96,7 +86,7 @@
                                     </li>
 
                                     <li class="flow-root">
-                                        <div class="relative -m-2 p-2 flex items-center space-x-4 rounded-xl hover:bg-gray-50 focus-within:ring-2 focus-within:ring-indigo-500">
+                                        <router-link to="/admin/db-dump" class="relative -m-2 p-2 flex items-center space-x-4 rounded-xl hover:bg-gray-50 focus-within:ring-2 focus-within:ring-indigo-500">
                                             <div class="flex-shrink-0 flex items-center justify-center h-16 w-16 rounded-lg bg-green-500">
                                                 <!-- Heroicon name: outline/photo -->
                                                 <svg class="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
@@ -107,16 +97,19 @@
                                                     />
                                                 </svg>
                                             </div>
+
                                             <div>
                                                 <h3 class="text-sm font-medium text-gray-900">
-                                                    <a href="#" class="focus:outline-none">
-                                                        <span class="absolute inset-0" aria-hidden="true"></span>
-                                                        Create a Gallery<span aria-hidden="true"> &rarr;</span>
-                                                    </a>
+                                                    <h2 class="text-xl text-green-500 font-medium">
+                                                        Database Dump
+                                                    </h2>
                                                 </h3>
-                                                <p class="mt-1 text-sm text-gray-500">Great for mood boards and inspiration.</p>
+
+                                                <p class="mt-1 text-sm text-gray-500">
+                                                    A raw dump of the platform's entire database.
+                                                </p>
                                             </div>
-                                        </div>
+                                        </router-link>
                                     </li>
 
                                     <li class="flow-root">
