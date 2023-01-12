@@ -3,7 +3,7 @@
         <div class="flex flex-col h-full max-w-3xl mx-auto space-y-4">
             <div class="flex justify-between items-center px-1 sm:px-3">
                 <div>
-                    <img class="h-10 lg:h-12 w-10 lg:w-12" :src="require('../assets/logo.png')" />
+                    <img class="h-10 lg:h-12 w-10 lg:w-12" src="~/assets/logo.png" />
                 </div>
 
                 <h1 class="text-3xl sm:text-4xl lg:text-5xl text-indigo-400 font-bold tracking-tighter opacity-70">
@@ -53,7 +53,9 @@ export default {
     methods: {
         initRostrum() {
             /* Initialize socket connection to Electrum server. */
-            const socket = new WebSocket('ws://electrum.nexa.org:7230')
+            // const socket = new WebSocket('ws://electrum.nexa.org:7230')
+            // const socket = new WebSocket('ws://electrum.nexa.org:20003')
+            const socket = new WebSocket('ws://rostrum.devops.cash:20003')
             // console.log('EXAMPLE SOCKET', socket);
 
             // const request = `{"method":"blockchain.address.get_balance","params":["nexa:nqtsq5g5mtglrfqmnr45s0x364pxcg2uw88h72hl9c864cyj", true],"id":"${uuidv4()}"}`
@@ -214,7 +216,7 @@ f900000000000000 <-- size (249 bytes)
             this.isAdmin = false
         }
 
-        // this.initRostrum()
+        this.initRostrum()
 
     },
     mounted: function () {

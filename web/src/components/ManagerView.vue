@@ -243,7 +243,7 @@
 /* global ethereum */
 
 /* Import modules. */
-import { ethers } from 'ethers'
+// import { ethers } from 'ethers'
 import moment from 'moment'
 // import { v4 as uuidv4 } from 'uuid'
 
@@ -305,123 +305,121 @@ export default {
             /* Validate email address. */
             if (!this.validateEmail()) return
 
-            /* Validate embedded Web3 objects. */
-            if (!window.ethereum && !window.bitcoin) {
-                /* Validate embedded ethereum object. */
-                if (window.bitcoin) {
-                    console.info('Found Bitcoin provider.')
-                } else if (window.ethereum) {
-                    console.info('Found Ethereum provider.')
-                } else {
-                    return console.error('No Web3 provider found.')
-                }
-            }
-
-            /* Connect accounts. */
-            const accounts = await ethereum.request({
-                method: 'eth_requestAccounts'
-            })
-            // console.info('Connected Web3 accounts:', accounts)
-
-            if (!accounts || accounts.length < 1) {
-                return alert('Please connect your MetaMask account to continue.')
-            }
-
-            this.accounts = accounts
-            console.log('ACCOUNTS', accounts)
-
-            /* Initialize provider. */
-            const provider = new ethers
-                .providers
-                .Web3Provider(window.ethereum, 'any')
-
-            /* Set signer. */
-            const signer = provider.getSigner()
-            // console.log('SIGNER', signer)
-
-            /* Set message name. */
-            const name = 'Nexa Events'
-
-            /* Set message version. */
-            const version = require('../../package.json').version
-
-            /* Set (connected) chain id. */
-            const chainId = await signer.getChainId()
-            // console.log('CHAIN ID', chainId);
-
-            /* Set verifying contract. */
-            // FIXME
-            const verifyingContract = '0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC'
-
-            /* Initialize the message domain. */
-            const domain = {
-                name,
-                version,
-                chainId,
-                verifyingContract,
-            }
-            // console.log('DOMAIN', domain)
-
-            /* Set the named list of all type definitions. */
-            const types = {
-                Profile: [
-                    { name: 'account', type: 'address' },
-                    { name: 'address', type: 'string' },
-                    { name: 'email', type: 'string' },
-                    { name: 'phone', type: 'string' },
-                    { name: 'notes', type: 'string' },
-                ],
-                Notif: [
-                    { name: 'profile', type: 'Profile' },
-                    { name: 'action', type: 'string' },
-                    { name: 'created', type: 'string' },
-                    { name: 'expires', type: 'string' },
-                ],
-            }
-
-            const profile = {
-                account: this.accounts[0] || '0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC',
-                address: this.address || 'n/a',
-                email: this.email,
-                phone: this.phone || 'n/a',
-                notes: this.notes || 'n/a',
-            }
-            // console.log('PROFILE', profile)
-
-            const action = 'signin_auth'
-            const created = moment().format('lll ZZ')
-            const expires = moment().add(7, 'days').format('lll ZZ')
-
-            const notif = {
-                profile,
-                action,
-                created,
-                expires,
-            }
-            // console.log('NOTIF', notif)
-
-            /* Create authentication package. */
-            const auth = { ...notif }
-            console.log('AUTH PACKAGE', auth)
-
-            const signature = await signer
-                ._signTypedData(domain, types, auth)
-            console.log('SIGNATURE', signature)
-
-            const rawResponse = await fetch('http://127.0.0.1:3000/v1/sessions', {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    auth,
-                    signature,
-                })
-            })
-
-            const content = await rawResponse.json()
-            console.log(content)
+            // /* Validate embedded Web3 objects. */
+            // if (!window.ethereum) {
+            //     /* Validate embedded ethereum object. */
+            //     if (window.ethereum) {
+            //         console.info('Found Ethereum provider.')
+            //     } else {
+            //         return console.error('No Web3 provider found.')
+            //     }
+            // }
+            //
+            // /* Connect accounts. */
+            // const accounts = await ethereum.request({
+            //     method: 'eth_requestAccounts'
+            // })
+            // // console.info('Connected Web3 accounts:', accounts)
+            //
+            // if (!accounts || accounts.length < 1) {
+            //     return alert('Please connect your MetaMask account to continue.')
+            // }
+            //
+            // this.accounts = accounts
+            // console.log('ACCOUNTS', accounts)
+            //
+            // /* Initialize provider. */
+            // const provider = new ethers
+            //     .providers
+            //     .Web3Provider(window.ethereum, 'any')
+            //
+            // /* Set signer. */
+            // const signer = provider.getSigner()
+            // // console.log('SIGNER', signer)
+            //
+            // /* Set message name. */
+            // const name = 'Nexa Events'
+            //
+            // /* Set message version. */
+            // const version = require('../../package.json').version
+            //
+            // /* Set (connected) chain id. */
+            // const chainId = await signer.getChainId()
+            // // console.log('CHAIN ID', chainId);
+            //
+            // /* Set verifying contract. */
+            // // FIXME
+            // const verifyingContract = '0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC'
+            //
+            // /* Initialize the message domain. */
+            // const domain = {
+            //     name,
+            //     version,
+            //     chainId,
+            //     verifyingContract,
+            // }
+            // // console.log('DOMAIN', domain)
+            //
+            // /* Set the named list of all type definitions. */
+            // const types = {
+            //     Profile: [
+            //         { name: 'account', type: 'address' },
+            //         { name: 'address', type: 'string' },
+            //         { name: 'email', type: 'string' },
+            //         { name: 'phone', type: 'string' },
+            //         { name: 'notes', type: 'string' },
+            //     ],
+            //     Notif: [
+            //         { name: 'profile', type: 'Profile' },
+            //         { name: 'action', type: 'string' },
+            //         { name: 'created', type: 'string' },
+            //         { name: 'expires', type: 'string' },
+            //     ],
+            // }
+            //
+            // const profile = {
+            //     account: this.accounts[0] || '0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC',
+            //     address: this.address || 'n/a',
+            //     email: this.email,
+            //     phone: this.phone || 'n/a',
+            //     notes: this.notes || 'n/a',
+            // }
+            // // console.log('PROFILE', profile)
+            //
+            // const action = 'signin_auth'
+            // const created = moment().format('lll ZZ')
+            // const expires = moment().add(7, 'days').format('lll ZZ')
+            //
+            // const notif = {
+            //     profile,
+            //     action,
+            //     created,
+            //     expires,
+            // }
+            // // console.log('NOTIF', notif)
+            //
+            // /* Create authentication package. */
+            // const auth = { ...notif }
+            // console.log('AUTH PACKAGE', auth)
+            //
+            // const signature = await signer
+            //     ._signTypedData(domain, types, auth)
+            // console.log('SIGNATURE', signature)
+            //
+            // const rawResponse = await fetch('http://127.0.0.1:3000/v1/sessions', {
+            //     method: 'POST',
+            //     headers: {
+            //         'Accept': 'application/json',
+            //         'Content-Type': 'application/json'
+            //     },
+            //     body: JSON.stringify({
+            //         auth,
+            //         signature,
+            //     })
+            // })
+            //
+            // const content = await rawResponse.json()
+            // console.log(content)
         },
 
         /**
