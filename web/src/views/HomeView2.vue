@@ -3,7 +3,7 @@
         <div class="flex flex-col h-full max-w-3xl mx-auto space-y-4">
             <div class="flex justify-between items-center px-1 sm:px-3">
                 <div>
-                    <img class="h-10 lg:h-12 w-10 lg:w-12" src="~/assets/logo.png" />
+                    <img class="h-10 lg:h-12 w-10 lg:w-12" src="@/assets/logo.png" />
                 </div>
 
                 <h1 class="text-3xl sm:text-4xl lg:text-5xl text-indigo-400 font-bold tracking-tighter opacity-70">
@@ -24,21 +24,21 @@
             </div>
         </div>
 
-        <AdminView v-if="isAdmin" :class="{ hidden: !showingMenu }" @toggleMenu="showingMenu = !showingMenu" />
-        <ManagerView v-else :class="{ hidden: !showingMenu }" @toggleMenu="showingMenu = !showingMenu" />
+        <!-- <AdminView v-if="isAdmin" :class="{ hidden: !showingMenu }" @toggleMenu="showingMenu = !showingMenu" /> -->
+        <ManagerView :class="{ hidden: !showingMenu }" @toggleMenu="showingMenu = !showingMenu" />
     </main>
 </template>
 
 <script>
 /* Import components. */
-import AdminView from '@/components/AdminView'
-import ManagerView from '@/components/ManagerView'
-import TimelineWin from '@/components/TimelineWin'
+// import AdminView from '@/components/AdminView'
+import ManagerView from '@/components/ManagerView.vue'
+import TimelineWin from '@/components/TimelineWin.vue'
 import { v4 as uuidv4 } from 'uuid'
 
 export default {
     components: {
-        AdminView,
+        // AdminView,
         ManagerView,
         TimelineWin,
     },

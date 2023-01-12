@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
-import HomeView from '../views/HomeView.vue'
+import HomeView from '../views/HomeView2.vue'
 
 import AdminDashboard from '../views/admin/Dashboard.vue'
 import AdminDbDump from '../views/admin/DbDump.vue'
