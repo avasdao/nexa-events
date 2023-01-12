@@ -31,7 +31,7 @@ export default function Home() {
   return (
     <Layout
       title={`${siteConfig.title}`}
-      description="Real-time. On-chain alerts!">
+      description="Real-time blockchain alerts!">
       <HomepageHeader />
       <main>
         <HomepageFeatures />
