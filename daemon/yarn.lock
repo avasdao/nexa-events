@@ -4,7 +4,7 @@
 
 "@nexajs/rpc@file:../../nexajs/packages/rpc":
   "resolved" "file:../../nexajs/packages/rpc"
-  "version" "23.1.9"
+  "version" "23.1.12"
   dependencies:
     "superagent" "8.0.6"
 
@@ -394,7 +394,7 @@
   "resolved" "https://registry.npmjs.org/node-gyp-build/-/node-gyp-build-4.1.1.tgz"
   "version" "4.1.1"
 
-"nodemailer@^6.9.0":
+"nodemailer@6.9.0":
   "integrity" "sha512-jFaCEGTeT3E/m/5R2MHWiyQH3pSARECRUDM+1hokOYc3lQAAG7ASuy+2jIsYVf+RVa9zePopSQwKNVFH8DKUpA=="
   "resolved" "https://registry.npmjs.org/nodemailer/-/nodemailer-6.9.0.tgz"
   "version" "6.9.0"
@@ -411,7 +411,7 @@
   dependencies:
     "wrappy" "1"
 
-"pouchdb@^8.0.0":
+"pouchdb@8.0.0":
   "integrity" "sha512-VYaPQ1CPTNjZ+Ltm/pl4llaDMTRCZrpg7TZ/2BpeA8RrawE66CRW7aGSWzgQarW8j/KHwEz5cVv/mwj9RMnCTg=="
   "resolved" "https://registry.npmjs.org/pouchdb/-/pouchdb-8.0.0.tgz"
   "version" "8.0.0"
