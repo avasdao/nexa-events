@@ -12,7 +12,7 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 /* Set database path. */
-const dbPath = path.join(__dirname, '..', '..', 'dbs')
+const dbPath = path.join(__dirname, '..', 'dbs')
 // console.log('DB PATH', dbPath)
 
 /* Verify database folder exists. */

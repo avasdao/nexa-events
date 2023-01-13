@@ -1,25 +1,29 @@
 /* Import modules. */
-// const Client = require('bitcoin-core')
+import fs from 'fs'
 const moment = require('moment')
+import path from 'path'
 const nodemailer = require('nodemailer')
 const PouchDB = require('pouchdb')
 const util = require('util')
 const { v4: uuidv4 } = require('uuid')
 const validator = require('validator')
 
-/* Initialize databases. */
-// const logsDb = new PouchDB(`http://${process.env.COUCHDB_AUTH}@localhost:5984/logs`)
-// const sessionsDb = new PouchDB(`http://${process.env.COUCHDB_AUTH}@localhost:5984/sessions`)
-const notifsDb = new PouchDB('dbs/notifs')
-const sessionsDb = new PouchDB('dbs/sessions')
+// NOTE: Polyfill for ES modules.
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
-// /* Initialize new Bitcoin client. */
-// const client = new Client({
-//     port: process.env.NEXA_RPC_PORT || 7227, // Testnet RPC port is 7229
-//     host: process.env.NEXA_RPC_HOST || '127.0.0.1',
-//     username: process.env.NEXA_RPC_USER || 'user',
-//     password: process.env.NEXA_RPC_PASS || 'password',
-// })
+/* Set database path. */
+const dbPath = path.join(__dirname, '..', 'dbs')
+// console.log('DB PATH', dbPath)
+
+/* Set Sessions (database) path. */
+const notifsPath = path.join(dbPath, 'notifs')
+const sessionsPath = path.join(dbPath, 'sessions')
+
+/* Initialize Sessions database. */
+const notifsDb = new PouchDB(notifsPath)
+const sessionsDb = new PouchDB(sessionsPath)
+
 
 const txtTemplate = (_msgDetails) => {
     return `
