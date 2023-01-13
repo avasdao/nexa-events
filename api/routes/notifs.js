@@ -1,5 +1,5 @@
 /* Import modules. */
-const Client = require('bitcoin-core')
+// const Client = require('bitcoin-core')
 const moment = require('moment')
 const nodemailer = require('nodemailer')
 const PouchDB = require('pouchdb')
@@ -13,13 +13,13 @@ const validator = require('validator')
 const notifsDb = new PouchDB('dbs/notifs')
 const sessionsDb = new PouchDB('dbs/sessions')
 
-/* Initialize new Bitcoin client. */
-const client = new Client({
-    port: process.env.NEXA_RPC_PORT || 7227, // Testnet RPC port is 7229
-    host: process.env.NEXA_RPC_HOST || '127.0.0.1',
-    username: process.env.NEXA_RPC_USER || 'user',
-    password: process.env.NEXA_RPC_PASS || 'password',
-})
+// /* Initialize new Bitcoin client. */
+// const client = new Client({
+//     port: process.env.NEXA_RPC_PORT || 7227, // Testnet RPC port is 7229
+//     host: process.env.NEXA_RPC_HOST || '127.0.0.1',
+//     username: process.env.NEXA_RPC_USER || 'user',
+//     password: process.env.NEXA_RPC_PASS || 'password',
+// })
 
 const txtTemplate = (_msgDetails) => {
     return `
@@ -104,8 +104,8 @@ const notifs = async function (req, res) {
         })
     }
 
-    result = await client.validateAddress(address)
-    console.log('\nIs address valid:', result.isvalid, result)
+    // result = await client.validateAddress(address)
+    // console.log('\nIs address valid:', result.isvalid, result)
 
     /* Validate address. */
     if (!result.isvalid) {

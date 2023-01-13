@@ -1,11 +1,13 @@
 'use strict'
 
-const express = require('express')
-const cors = require('cors')
+import express from 'express'
+import cors from 'cors'
+
+import sessions from './routes/sessions.js'
 
 /* Set constants. */
 const HOST = '127.0.0.1'
-const PORT = 3000
+const PORT = process.env.PORT || 3000
 
 /* Initialize application. */
 const app = express()
@@ -37,15 +39,15 @@ app.get('/', (req, res) => {
 })
 
 /* Initialize Administration route. */
-app.post('/v1/admin', require('./routes/admin'))
+// app.post('/v1/admin', import('./routes/admin'))
 
 /* Initialize Sessions route. */
-app.post('/v1/sessions', require('./routes/sessions'))
+app.post('/v1/sessions', sessions)
 
-/* Initialize Notifications route. */
-app.post('/v1/notifs', require('./routes/notifs'))
+/* Initialize Users route. */
+// app.post('/v1/users', import('./routes/users'))
 
-// TODO: Offer help.
+/* Initialize v1 (default) route. */
 app.get('/v1', (req, res) => {
     res.end('Oops! I think you forgot something.')
 })
@@ -54,15 +56,16 @@ app.get('/v1', (req, res) => {
 app.listen(PORT, HOST)
 
 /* Display current environment variables. */
+console.log()
+console.log(`  Nexa Events Server is running at:`)
+console.log(`  http://${HOST}:${PORT}`)
+
 console.info()
-console.log(`Running on http://${HOST}:${PORT}`)
-console.info()
-console.info('Current Environment Variables')
-console.info('-----------------------------')
-console.info('  - NODE_ENV     :', process.env.NODE_ENV)
-console.info('  - ADMIN_KEY    :', process.env.ADMIN_KEY)
-console.info('  - COUCHDB_AUTH :', process.env.COUCHDB_AUTH)
-console.info('  - SMTP_HOST    :', process.env.SMTP_HOST)
-console.info('  - SMTP_USER    :', process.env.SMTP_USER)
-console.info('  - SMTP_PASS    :', process.env.SMTP_PASS)
+console.info('  Current Environment Variables')
+console.info('---------------------------------')
+console.info('  - NODE_ENV  :', process.env.NODE_ENV)
+console.info('  - ADMIN_KEY :', process.env.ADMIN_KEY) // TODO: Implement (nexid).
+console.info('  - SMTP_HOST :', process.env.SMTP_HOST)
+console.info('  - SMTP_USER :', process.env.SMTP_USER)
+console.info('  - SMTP_PASS :', process.env.SMTP_PASS)
 console.info()

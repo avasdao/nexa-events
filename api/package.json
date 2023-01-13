@@ -1,8 +1,9 @@
 {
   "name": "nexa-events-api",
   "version": "23.1.12",
-  "description": "Manage all requests for Nexa Events data.",
+  "description": "Manage all REST requests for the Nexa Events platform.",
   "author": "Nexa Events contributors",
+  "type": "module",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"

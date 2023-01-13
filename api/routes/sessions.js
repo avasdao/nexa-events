@@ -1,15 +1,13 @@
 /* Import modules. */
-const ethers = require('ethers')
-const moment = require('moment')
-const superagent = require('superagent')
-const { v4: uuidv4 } = require('uuid')
+import moment from 'moment'
+import PouchDB from 'pouchdb'
+import superagent from 'superagent'
+import { v4 as uuidv4 } from 'uuid'
 
 /**
  * Sessions Module
  */
-const sessions = async function (req, res) {
-    console.log('BODY', req.body)
-
+const sessions = async (req, res) => {
     const body = req.body
     console.log('BODY', body)
 
@@ -24,51 +22,29 @@ const sessions = async function (req, res) {
         })
     }
 
-    const domain = {
-        name: 'Nexa Events',
-        version: '22.9.2',
-        chainId: 1,
-        verifyingContract: '0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC',
-    }
-
-    // The named list of all type definitions
-    const types = {
-        Profile: [
-            { name: 'email', type: 'string' },
-            { name: 'account', type: 'address' },
-        ]
-    }
-
-    // The data to sign
-    const value = {
-        email: 'satoshi@bitcoin.org',
-        account: '0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826',
-    }
-
-    const signature = body.signature
-    console.log('\nSIGNATURE', signature)
-
-    /* Validate signature. */
-    if (!signature) {
-        /* Set status. */
-        res.status(400)
-
-        /* Return error. */
-        return res.json({
-            error: 'Missing signature parameter.'
-        })
-    }
-
-    const isVerified = ethers.utils
-        .verifyTypedData( domain, types, value, signature )
-    console.log('\nIS VERIFIED', isVerified)
-
-return res.json({
-    isVerified,
-})
-
     const id = uuidv4()
     console.log('ID', id)
+
+    /* Validate signature. */
+    // if (!signature) {
+    //     /* Set status. */
+    //     res.status(400)
+
+    //     /* Return error. */
+    //     return res.json({
+    //         error: 'Missing signature parameter.'
+    //     })
+    // }
+
+    let isVerified
+    // isVerified = ethers.utils
+    //     .verifyTypedData( domain, types, value, signature )
+    // console.log('\nIS VERIFIED', isVerified)
+
+return res.json({
+    id,
+    isVerified,
+})
 
     const profileid = body.profileid
 
@@ -101,4 +77,4 @@ return res.json({
 }
 
 /* Export module. */
-module.exports = sessions
+export default sessions
