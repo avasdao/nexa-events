@@ -6,13 +6,13 @@ const util = require('util')
 const { v4: uuidv4 } = require('uuid')
 
 /* Initialize databases. */
-const usersDb = new PouchDB(`http://${process.env.COUCHDB_AUTH}@localhost:5984/users`)
+const profilesDb = new PouchDB(`http://${process.env.COUCHDB_AUTH}@localhost:5984/profiles`)
 const logsDb = new PouchDB(`http://${process.env.COUCHDB_AUTH}@localhost:5984/logs`)
 
 /**
- * Users Module
+ * (User) Profiles Module
  */
-const users = async function (req, res) {
+const profiles = async function (req, res) {
     const address = req.params.address
     console.log('USER ADDRESS', address)
 
@@ -39,7 +39,7 @@ const users = async function (req, res) {
     if (req.method === 'GET') {
         if (address) {
             /* Request existing user. */
-            results = await usersDb.query('api/byAddress', {
+            results = await profilesDb.query('api/byAddress', {
                 key: address,
                 include_docs: true,
             }).catch(err => {
@@ -123,7 +123,7 @@ const users = async function (req, res) {
             // }
 
             /* Set issuer metadata. */
-            // const metadata = await magicAdmin.users.getMetadataByIssuer(issuer)
+            // const metadata = await magicAdmin.profiles.getMetadataByIssuer(issuer)
             // console.log('MAGIC LOGIN (data):', JSON.stringify(metadata, null, 4))
 
             /* Validate metadata. */
@@ -160,14 +160,14 @@ const users = async function (req, res) {
         const pkg = {
             _id: uuidv4(),
             ...merchant,
-            users: [
+            profiles: [
                 email,
             ],
             createdAt: moment().unix(),
         }
 
         /* Retrieve results. */
-        results = await usersDb.put(pkg)
+        results = await profilesDb.put(pkg)
             .catch(err => {
                 console.error('AUTH ERROR:', err)
             })
@@ -181,4 +181,4 @@ const users = async function (req, res) {
 }
 
 /* Export module. */
-module.exports = users
+module.exports = profiles

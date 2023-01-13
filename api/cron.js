@@ -7,57 +7,15 @@ import { call } from '@nexajs/rpc'
 import superagent from 'superagent'
 import { v4 as uuidv4 } from 'uuid'
 
-/* Initialize databases. */
-const notifsDb = new PouchDB('./dbs/notifs')
-const sessionsDb = new PouchDB('./dbs/sessions')
-
-
 /**
- * Notifications
+ * Start Daemon
  */
-const notifs = async function (req, res) {
+export async function start(_databases) {
     let id
     let address
     let body
     let response
     let results
-
-    body = req.body
-    console.log('BODY', body)
-
-    /* Validate body. */
-    if (!body) {
-        /* Set status. */
-        res.status(400)
-
-        /* Return error. */
-        return res.json({
-            error: 'Missing body parameter.'
-        })
-    }
-
-    address = body.address
-    console.log('\nNotification address:', address)
-
-    // result = await client.validateAddress(address)
-    // console.log('\nIs address valid:', result.isvalid, result)
-
-    /* Validate address. */
-    if (!result.isvalid) {
-        /* Set status. */
-        res.status(400)
-
-        /* Return error. */
-        return res.json({
-            error: 'Your Nexa address is invalid.'
-        })
-    }
-
-    // const balance = await client.getBalance('*', 0)
-    // console.log('\nBALANCE', balance)
-
-    // client.getInfo().then((help) => console.log(help))
-return res.json({ status: 'done!', balance, })
 
     /* Generate id. */
     id = uuidv4()
@@ -112,8 +70,18 @@ return res.json({ status: 'done!', balance, })
     })
 }
 
+/**
+ * Test Daemon
+ *
+ * Performs various tests to ensure the daemon is performing as expected.
+ */
+export async function test(_databases) {
+    let id
+    let response
 
-;(async () => {
+    /* Set databases. */
+    const sessionsDb = _databases.sessions
+
     const method = 'getwalletinfo'
 
     const params = []
@@ -126,6 +94,14 @@ return res.json({ status: 'done!', balance, })
         port: '7227', // (optional) default is 7227
     }
 
-    const response = await call(method, params, options)
-    console.log('RPC RESPONSE\n', response)
-})()
+    response = await call(method, params, options)
+    // console.log('RPC RESPONSE\n', response)
+
+    id = 'd5113e8e-d2c1-416f-aa8e-cbdb54f7e718'
+    response = await sessionsDb
+        .get(id)
+        .catch(err => {
+            console.error(err)
+        })
+    console.log('DB RESPONSE', response)
+}

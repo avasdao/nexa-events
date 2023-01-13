@@ -1,30 +1,7 @@
 /* Import modules. */
-import fs from 'fs'
 import moment from 'moment'
-import path from 'path'
-import PouchDB from 'pouchdb'
 import superagent from 'superagent'
-import { fileURLToPath } from 'url'
 import { v4 as uuidv4 } from 'uuid'
-
-// NOTE: Polyfill for ES modules.
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
-
-/* Set database path. */
-const dbPath = path.join(__dirname, '..', 'dbs')
-// console.log('DB PATH', dbPath)
-
-/* Verify database folder exists. */
-if (!fs.existsSync(dbPath)) {
-    fs.mkdirSync(dbPath)
-}
-
-/* Set Sessions (database) path. */
-const sessionsPath = path.join(dbPath, 'sessions')
-
-/* Initialize Sessions database. */
-const sessionsDb = new PouchDB(sessionsPath)
 
 /**
  * Sessions Module
@@ -95,7 +72,7 @@ const _handleGet = async (req, res) => {
     }
 
     /* Save session to database. */
-    response = await sessionsDb
+    response = await req.dbs.sessions
         .get(sessionid)
         .catch(err => {
             // console.error(err)
@@ -172,7 +149,7 @@ const _handlePost = async (req, res) => {
     /* Generate timestamp. */
     createdAt = moment().unix()
 
-    response = await sessionsDb
+    response = await req.dbs.sessions
         .put({
             _id: id,
             ...body,
