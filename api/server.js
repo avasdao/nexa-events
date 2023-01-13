@@ -41,7 +41,9 @@ app.get('/', (req, res) => {
 /* Initialize Administration route. */
 // app.post('/v1/admin', import('./routes/admin'))
 
-/* Initialize Sessions route. */
+/* Initialize Sessions routes. */
+app.get('/v1/sessions', sessions)
+app.get('/v1/sessions/:sessionid', sessions)
 app.post('/v1/sessions', sessions)
 
 /* Initialize Users route. */

@@ -1,15 +1,158 @@
 /* Import modules. */
+import fs from 'fs'
 import moment from 'moment'
+import path from 'path'
 import PouchDB from 'pouchdb'
 import superagent from 'superagent'
+import { fileURLToPath } from 'url'
 import { v4 as uuidv4 } from 'uuid'
+
+// NOTE: Polyfill for ES modules.
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+
+/* Set database path. */
+const dbPath = path.join(__dirname, '..', '..', 'dbs')
+// console.log('DB PATH', dbPath)
+
+/* Verify database folder exists. */
+if (!fs.existsSync(dbPath)) {
+    fs.mkdirSync(dbPath)
+}
+
+/* Set Sessions (database) path. */
+const sessionsPath = path.join(dbPath, 'sessions')
+
+/* Initialize Sessions database. */
+const sessionsDb = new PouchDB(sessionsPath)
 
 /**
  * Sessions Module
+ *
+ * @param {Object} req
+ * @param {Object} res
  */
 const sessions = async (req, res) => {
-    const body = req.body
-    console.log('BODY', body)
+    /* Initialize local variables. */
+    let method
+
+    /* Set request method. */
+    method = req.method
+
+    if (method === 'GET') {
+        return _handleGet(req, res)
+    }
+
+    if (method === 'POST') {
+        return _handlePost(req, res)
+    }
+
+    /* Fallback response. */
+    res.end('Session error.')
+}
+
+
+/**
+ * Handle Get Request
+ *
+ * @param {Object} req
+ * @param {Object} res
+ */
+const _handleGet = async (req, res) => {
+    /* Initialize local variables. */
+    let error
+    let params
+    let response
+    let session
+    let sessionid
+
+    /* Set request parameters. */
+    params = req.params
+
+    /* Validate parameters. */
+    if (!params) {
+        /* Set status. */
+        res.status(400)
+
+        /* Return error. */
+        return res.json({
+            error: 'Missing request parameters.'
+        })
+    }
+
+    /* Set session id. */
+    sessionid = params.sessionid
+
+    /* Validate session id. */
+    if (!sessionid) {
+        /* Set status. */
+        res.status(400)
+
+        /* Return error. */
+        return res.json({
+            error: 'Missing session id.'
+        })
+    }
+
+    /* Save session to database. */
+    response = await sessionsDb
+        .get(sessionid)
+        .catch(err => {
+            // console.error(err)
+
+            /* Set error. */
+            error = err
+        })
+
+    /* Verify error status. */
+    if (error && error.status) {
+        if (error.status === 404) {
+            error = {
+                status: error.status,
+                name: error.name,
+                message: error.message,
+            }
+
+            /* Set status. */
+            res.status(error.status)
+
+            /* Return error. */
+            return res.json(error)
+        }
+    }
+
+    session = {
+        client: response.client,
+        ip: response.ip,
+        createdAt: response.createdAt,
+    }
+
+    /* Return package. */
+    res.json({
+        ...session,
+        error,
+    })
+}
+
+
+/**
+ * Handle Post Request
+ *
+ * @param {Object} req
+ * @param {Object} res
+ * @returns
+ */
+const _handlePost = async (req, res) => {
+    /* Initialize local variables. */
+    let body
+    let createdAt
+    let error
+    let id
+    let response
+
+    /* Set request body. */
+    body = req.body
+    // console.log('BODY', body)
 
     /* Validate body. */
     if (!body) {
@@ -22,8 +165,31 @@ const sessions = async (req, res) => {
         })
     }
 
-    const id = uuidv4()
-    console.log('ID', id)
+    /* Generate a unique id. */
+    id = uuidv4()
+    // console.log('ID', id)
+
+    /* Generate timestamp. */
+    createdAt = moment().unix()
+
+    response = await sessionsDb
+        .put({
+            _id: id,
+            ...body,
+            createdAt,
+        })
+        .catch(err => {
+            /* Set error. */
+            error = err
+            console.error(err)
+        })
+
+    /* Send response back to client. */
+    return res.json({
+        id,
+        response,
+        error,
+    })
 
     /* Validate signature. */
     // if (!signature) {
@@ -48,7 +214,7 @@ return res.json({
 
     const profileid = body.profileid
 
-    const createdAt = moment().unix()
+    createdAt = moment().unix()
 
     const updatedAt = null
 
@@ -75,6 +241,7 @@ return res.json({
 
     return res.json(response.body)
 }
+
 
 /* Export module. */
 export default sessions
