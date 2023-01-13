@@ -1,15 +1,13 @@
 {
   "name": "nexa-events-api",
-  "version": "22.9.2",
-  "description": "NEXA Events Manager API",
-  "author": "Ava's DAO <support@avasdao.org>",
+  "version": "23.1.12",
+  "description": "Manage all requests for Nexa Events data.",
+  "author": "Nexa Events contributors",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
   },
   "dependencies": {
-    "@magic-sdk/admin": "1.4.1",
-    "bitcoin-core": "4.1.0",
     "cors": "2.8.5",
     "csv-parser": "3.0.0",
     "ethers": "5.7.0",

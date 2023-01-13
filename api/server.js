@@ -45,9 +45,6 @@ app.post('/v1/sessions', require('./routes/sessions'))
 /* Initialize Notifications route. */
 app.post('/v1/notifs', require('./routes/notifs'))
 
-/* Initialize Magic (Email) Link route. */
-app.post('/v1/magiclink', require('./routes/magiclink'))
-
 // TODO: Offer help.
 app.get('/v1', (req, res) => {
     res.end('Oops! I think you forgot something.')
