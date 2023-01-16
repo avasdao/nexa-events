@@ -14,7 +14,7 @@
             </div>
 
             <div class="flex-1 p-5 bg-indigo-100 border-8 border-indigo-300 rounded-xl overflow-y-scroll">
-                <TimelineWin />
+                <TimelineWin :blocks="blocks" />
             </div>
 
             <div class="flex justify-center">
@@ -46,6 +46,8 @@ export default {
         showingMenu: null,
         isAdmin: null,
         isManager: null,
+
+        blocks: null,
     }),
     computed: {
         //
@@ -53,10 +55,9 @@ export default {
     methods: {
         initRostrum() {
             /* Initialize socket connection to Electrum server. */
-            // const socket = new WebSocket('ws://electrum.nexa.org:7230')
-            // const socket = new WebSocket('ws://electrum.nexa.org:20003')
-            const socket = new WebSocket('ws://rostrum.devops.cash:20003')
-            // console.log('EXAMPLE SOCKET', socket);
+            const socket = new WebSocket('ws://127.0.0.1:20003')
+            // const socket = new WebSocket('wss://electrum.nexa.org:20004')
+            // const socket = new WebSocket('wss://rostrum.nexa.events:20004')
 
             // const request = `{"method":"blockchain.address.get_balance","params":["nexa:nqtsq5g5mtglrfqmnr45s0x364pxcg2uw88h72hl9c864cyj", true],"id":"${uuidv4()}"}`
 
@@ -120,6 +121,12 @@ export default {
 
                                 // request = `{"method":"blockchain.block.header","params":[${height}],"id":"${uuidv4()}"}`
                                 // socket.send(request + '\n')
+
+                                const block = params[0]
+                                this.blocks.push({
+                                    id: block.hex,
+                                    height: block.height,
+                                })
                             }
                         }
                     } catch (err) {
@@ -215,6 +222,8 @@ f900000000000000 <-- size (249 bytes)
         } else {
             this.isAdmin = false
         }
+
+        this.blocks = []
 
         this.initRostrum()
 
