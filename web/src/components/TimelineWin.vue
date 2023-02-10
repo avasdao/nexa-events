@@ -1,7 +1,7 @@
 <template>
     <main class="bg-indigo-200">
         <ul role="list" class="-mb-8">
-            <li v-for="block of blocks" :key="block.id">
+            <li v-for="block of mostRecent" :key="block.id">
                 <div class="relative pb-8">
                     <span class="absolute top-5 left-5 -ml-px h-full w-0.5 bg-gray-200" aria-hidden="true"></span>
                     <div class="relative flex items-start space-x-3">
@@ -23,16 +23,21 @@
                             <div>
                                 <div class="text-sm">
                                     <span class="font-medium text-gray-900">
-                                        {{block.id.slice(0, 10)}}
+                                        {{block.hash.slice(0, 10)}}
                                     </span>
                                 </div>
+
                                 <p class="mt-0.5 text-sm text-gray-500">
-                                    {{block.height}}
+                                    height: {{block.height}}
+                                </p>
+
+                                <p class="mt-0.5 text-sm text-gray-500">
+                                    diff: {{block.difficulty}}
                                 </p>
                             </div>
 
                             <div class="mt-2 text-sm text-gray-700">
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Tincidunt nunc ipsum tempor purus vitae id. Morbi in vestibulum nec varius. Et diam cursus quis sed purus nam.</p>
+                                <p v-html="txSummary(block.txs)" />
                             </div>
                         </div>
                     </div>
@@ -59,9 +64,9 @@
                         </div>
                         <div class="min-w-0 flex-1 py-1.5">
                             <div class="text-sm text-gray-500">
-                                <a href="#" class="font-medium text-gray-900">Hilary Mahy</a>
+                                <a href="javascript://" class="font-medium text-gray-900">Hilary Mahy</a>
                                 assigned
-                                <a href="#" class="font-medium text-gray-900">Kristin Watson</a>
+                                <a href="javascript://" class="font-medium text-gray-900">Kristin Watson</a>
                                 <span class="whitespace-nowrap">2d ago</span>
                             </div>
                         </div>
@@ -86,17 +91,17 @@
                         <div class="min-w-0 flex-1 py-0">
                             <div class="text-sm leading-8 text-gray-500">
                                 <span class="mr-0.5">
-                                    <a href="#" class="font-medium text-gray-900">Hilary Mahy</a>
+                                    <a href="javascript://" class="font-medium text-gray-900">Hilary Mahy</a>
                                     added tags
                                 </span>
                                 <span class="mr-0.5">
-                                    <a href="#" class="relative inline-flex items-center rounded-full border border-gray-300 px-3 py-0.5 text-sm">
+                                    <a href="javascript://" class="relative inline-flex items-center rounded-full border border-gray-300 px-3 py-0.5 text-sm">
                                         <span class="absolute flex-shrink-0 flex items-center justify-center">
                                             <span class="h-1.5 w-1.5 rounded-full bg-rose-500" aria-hidden="true"></span>
                                         </span>
                                         <span class="ml-3.5 font-medium text-gray-900">Bug</span>
                                     </a>
-                                    <a href="#" class="relative inline-flex items-center rounded-full border border-gray-300 px-3 py-0.5 text-sm">
+                                    <a href="javascript://" class="relative inline-flex items-center rounded-full border border-gray-300 px-3 py-0.5 text-sm">
                                         <span class="absolute flex-shrink-0 flex items-center justify-center">
                                             <span class="h-1.5 w-1.5 rounded-full bg-indigo-500" aria-hidden="true"></span>
                                         </span>
@@ -130,7 +135,7 @@
                         <div class="min-w-0 flex-1">
                             <div>
                                 <div class="text-sm">
-                                    <a href="#" class="font-medium text-gray-900">Jason Meyers</a>
+                                    <a href="javascript://" class="font-medium text-gray-900">Jason Meyers</a>
                                 </div>
                                 <p class="mt-0.5 text-sm text-gray-500">Commented 2h ago</p>
                             </div>
@@ -157,10 +162,29 @@ export default {
         //
     }),
     computed: {
-        //
+        mostRecent() {
+            const blocks = []
+
+            Object.keys(this.blocks).forEach(_block => {
+                blocks.push(_block)
+            })
+
+            return blocks.reverse()
+        }
     },
     methods: {
-        //
+        txSummary(_txs) {
+            if (!_txs) return 'no txs'
+
+            let body = `${_txs.length} transaction(s)<br />`
+            let count = 0
+
+            _txs.forEach(_tx => {
+                body += `${++count}. ${_tx.slice(0, 8)} ... ${_tx.slice(-8)}<br />`
+            })
+
+            return body
+        }
     },
     created: function () {
         //

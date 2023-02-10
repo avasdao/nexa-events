@@ -1,6 +1,6 @@
 {
   "name": "nexa-events-web",
-  "version": "23.1.12",
+  "version": "23.1.16",
   "license": "MIT",
   "scripts": {
     "dev": "vite",
@@ -21,6 +21,7 @@
     "vue-router": "4.1.6"
   },
   "devDependencies": {
+    "@nexajs/rpc": "23.1.12",
     "@rushstack/eslint-patch": "1.1.4",
     "@types/jsdom": "20.0.1",
     "@types/node": "18.11.12",

@@ -4,7 +4,7 @@ import { RouterLink, RouterView } from 'vue-router'
 </script>
 
 <template>
-    <header>
+    <header class="bg-pink-500">
         <img alt="Nexa Events logo" class="w-32 h-32" src="@/assets/logo.png" />
 
         <div class="wrapper">

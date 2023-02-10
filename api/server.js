@@ -8,6 +8,7 @@ import PouchDB from 'pouchdb'
 import { fileURLToPath } from 'url'
 
 import { start, test } from './cron.js'
+import rpc from './routes/rpc.js'
 import sessions from './routes/sessions.js'
 
 // NOTE: Polyfill for ES modules.
@@ -47,20 +48,20 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 /* Initialize database middleware. */
-app.use(function (req, res, next) {
-    /* Add all databases to request object. */
-    req.dbs = dbs
+// app.use(function (req, res, next) {
+//     /* Add all databases to request object. */
+//     req.dbs = dbs
 
-    /* Call next middleware. */
-    next()
-})
+//     /* Call next middleware. */
+//     next()
+// })
 
 /* Build welcome message. */
 const welcome = `
 <html>
 <body>
 
-<h2>Welcome to the NEXA Events Manager API</h2>
+<h2>Welcome to the Nexa Events Manager API</h2>
 <h3>https://api.nexa.events</h3>
 
 </body>
@@ -76,9 +77,12 @@ app.get('/', (req, res) => {
 // app.post('/v1/admin', import('./routes/admin'))
 
 /* Initialize Sessions routes. */
-app.get('/v1/sessions', sessions)
 app.get('/v1/sessions/:sessionid', sessions)
+app.get('/v1/sessions', sessions)
 app.post('/v1/sessions', sessions)
+
+/* Initialize RPC route. */
+app.post('/v1/rpc', rpc)
 
 /* Initialize Users route. */
 // app.post('/v1/users', import('./routes/users'))

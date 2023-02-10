@@ -19,7 +19,7 @@
 
             <div class="flex justify-center">
                 <span class="text-gray-200 text-xs">
-                    brought to you with ❤️ from <a class="text-rose-300 font-medium" href="https://avasdao.org" target="_blank">Ava's DAO</a>
+                    brought to you with <span class="text-rose-300 font-bold">♡</span> from <a class="text-rose-300 font-medium" href="https://avasdao.org" target="_blank">Ava's DAO</a> as <a class="text-rose-300 font-medium" href="https://github.com/avasdao/nexa-events" target="_blank">FOSS</a>
                 </span>
             </div>
         </div>
@@ -30,11 +30,14 @@
 </template>
 
 <script>
+/* Import modules. */
+import { call } from '@nexajs/rpc'
+import { v4 as uuidv4 } from 'uuid'
+
 /* Import components. */
 // import AdminView from '@/components/AdminView'
 import ManagerView from '@/components/ManagerView.vue'
 import TimelineWin from '@/components/TimelineWin.vue'
-import { v4 as uuidv4 } from 'uuid'
 
 export default {
     components: {
@@ -77,12 +80,15 @@ export default {
                   request = `{"method":"blockchain.headers.subscribe","params":[""],"id":"${uuidv4()}"}`
                   socket.send(request + '\n')
 
-                  request = `{"method":"blockchain.block.header","params":[56332],"id":"${uuidv4()}"}`
+                  request = `{"method":"blockchain.block.header","params":[185857, 185858],"id":"${uuidv4()}"}`
+                  // socket.send(request + '\n')
+
+                  request = `{"method":"token.genesis.info","params":["nexa:tqjdvl627lz78s5sr37u65d0rqskla20cpcjytl3n2mxwgsv55qqq09265twm"],"id":"${uuidv4()}"}`
                   socket.send(request + '\n')
             }
 
             /* Handle message. */
-            socket.onmessage = (msg) => {
+            socket.onmessage = async (msg) => {
                 // console.log('ONMESSAGE', msg);
 
                 let data
@@ -123,10 +129,60 @@ export default {
                                 // socket.send(request + '\n')
 
                                 const block = params[0]
-                                this.blocks.push({
-                                    id: block.hex,
-                                    height: block.height,
+
+                                // TODO: Validate block data.
+
+                                this.blocks[block.height] = block
+
+                                /* Set method. */
+                                const method = 'getblock'
+
+                                /* Set parameters. */
+                                const params2 = [block.height]
+
+                                /* Set node options. */
+                                // const options = {
+                                //     username: 'user', // required
+                                //     password: 'password', // required
+                                //     host: '127.0.0.1', // (optional) default is localhost (127.0.0.1)
+                                //     port: '7227', // (optional) default is 7227
+                                // }
+
+                                /* Execute JSON-RPC request. */
+                                // const response = await call(method, params2, options)
+
+                                let endpoint = 'http://127.0.0.1:3000/v1/rpc'
+                                let response = await fetch(endpoint, {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                    },
+                                    body: JSON.stringify({
+                                        action: method,
+                                        params: params2,
+                                    }),
                                 })
+                                if (response) {
+                                    let blockInfo = await response.json()
+                                    console.log('\nJSON-RPC response:\n', blockInfo)
+
+                                    let block = this.blocks[blockInfo.height]
+
+                                    if (block) {
+                                        /* Set bits. */
+                                        block.bits = blockInfo.bits
+
+                                        /* Set size. */
+                                        block.size = blockInfo.size
+
+                                        /* Set difficulty. */
+                                        block.difficulty = blockInfo.difficulty
+
+                                        /* Set transactions. */
+                                        block.txs = blockInfo.txidem
+                                    }
+                                }
+
                             }
                         }
                     } catch (err) {
@@ -223,7 +279,7 @@ f900000000000000 <-- size (249 bytes)
             this.isAdmin = false
         }
 
-        this.blocks = []
+        this.blocks = {}
 
         this.initRostrum()
 
