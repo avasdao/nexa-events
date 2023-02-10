@@ -7,4 +7,4 @@ services:
     container_name: nexa-events
     restart: always
     ports:
-      - '3000:80'
+      - '127.0.0.1:3000:80'
